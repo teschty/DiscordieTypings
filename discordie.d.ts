@@ -3,8 +3,8 @@ declare module "discordie" {
     import * as stream from "stream";
 
     class VoiceConnectionInfo {
-        /*public gatewaySocket: GatewaySocket;
-        public voiceSocket: VoiceSocket;*/
+        gatewaySocket;
+        voiceSocket;
         public voiceConnection: IVoiceConnection;
     }
 
@@ -34,11 +34,499 @@ declare module "discordie" {
         disable();
     }
 
+    interface DisconnectedEvent {
+        error: Error;
+        /**
+         * Only present (and set to true) when auto-reconnect is enabled.
+         */
+        autoReconnect: boolean;
+        /**
+         * Delay in milliseconds until next reconnect attempt. Only present when auto-reconnect is enabled.
+         */
+        delay: number;
+    }
+
+    interface GatewayReadyResumedEvent {
+        /**
+         * GatewaySocket
+         */
+        socket;
+        /**
+         * Raw event data
+         */
+        data: Object;
+    }
+
+    interface VoiceConnectedEvent {
+        socket;
+        voiceConnection: IVoiceConnection;
+    }
+
+    interface VoiceDisconnectedEvent {
+        socket;
+        voiceConnection: IVoiceConnection;
+        error: Error;
+        /**
+         * Indicating whether was caused by IVoiceChannel.leave() or Discordie.disconnect(), also true if channel/guild has been deleted
+         */
+        manual: boolean;
+        /**
+         * Indicates whether there is a reconnect pending, reconnects can occur when Discord decides to move users to another voice server
+         */
+        endpointAwait: Promise<VoiceConnectionInfo>;
+    }
+
+    interface GuildUnavailableEvent {
+        socket;
+        guildId: string;
+    }
+
+    interface CallUnavailableEvent {
+        socket;
+        channelId: string;
+    }
+
+    interface CallRingEvent {
+        socket;
+        channel: IDirectMessageChannel;
+    }
+    
+    interface PresenceMemberInfoUpdateEvent {
+        socket;
+        /**
+         * Old instance of internal User model (immutable)
+         */
+        old: Object;
+        /**
+         * New instance of internal User model (immutable)
+         */
+        new: Object;
+    }
+
+    interface VoiceChannelLeaveEvent {
+        socket;
+        user: IUser;
+        channel: IChannel;
+        channelId: string;
+        guildId: string;
+        /**
+         * Next channel id if user moved to another channel
+         */
+        newChannelId: string;
+        /**
+         * Next guild id if user moved to another channel
+         */
+        newGuildId: string;
+    }
+
+    interface VoiceChannelJoinEvent {
+        user: IUser;
+        channel: IChannel;
+        channelId: string;
+        guildId: string;
+    }
+
+    interface VoiceUserSelfMuteEvent {
+        socket;
+        user: IUser;
+        channel: IChannel;
+        channelId: string;
+        guildId: string;
+        /**
+         * Current state (is self muted)
+         */
+        state: boolean;
+    }
+
+    interface VoiceUserSelfDeafEvent {
+        socket;
+        user: IUser;
+        channel: IChannel;
+        channelId: string;
+        guildId: string;
+        /**
+         * Current state (is self deafened)
+         */
+        state: boolean;
+    }
+
+    interface VoiceUserMuteEvent {
+        socket;
+        user: IUser;
+        channel: IChannel;
+        channelId: string;
+        guildId: string;
+        /**
+         * Current state (is muted globally)
+         */
+        state: boolean;
+    }
+
+    interface VoiceUserDeafEvent {
+        socket;
+        user: IUser;
+        channel: IChannel;
+        channelId: string;
+        guildId: string;
+        /**
+         * Current state (is deafened globally)
+         */
+        state: boolean;
+    }
+
+    interface MessageCreateEvent {
+        socket;
+        message: IMessage;
+    }
+
+    interface MessageDeleteEvent {
+        socket;
+        channelId: string;
+        messageId: string;
+        message: IMessage;
+    }
+
+    interface MessageDeleteBulkEvent {
+        socket;
+        channelId: string;
+        messageIds: string[];
+        /**
+         * Array of known deleted messages, can be empty
+         */
+        messages: IMessage[];
+    }
+
+    interface MessageUpdateEvent {
+        socket;
+        message: IMessage;
+        /**
+         * Raw message object received from server
+         */
+        data: Object;
+    }
+
+    interface PresenceUpdateEvent {
+        socket;
+        guild: IGuild;
+        user: IUser;
+        member: IGuildMember | IUser;
+    }
+
+    interface TypingStartEvent {
+        socket;
+        user: IUser;
+        /**
+         * Unix timestamp
+         */
+        timestamp: number;
+        channel: IChannel;
+    }
+
+    interface ChannelCreateEvent {
+        socket;
+        channel: IChannel;
+    }
+
+    interface ChannelDeleteEvent {
+        socket;
+        channelId: string;
+        /**
+         * Raw channel object received from server
+         */
+        data: Object;
+    }
+
+    interface ChannelUpdateEvent {
+        socket;
+        channel: IChannel;
+        /**
+         * Function returning an object {before: ..., after: ...} containing two raw channel objects.
+         */
+        getChanges(): { before: IChannel; after: IChannel; }
+    }
+
+    interface ChannelRecipientAddEvent {
+        socket;
+        channel: IDirectMessageChannel;
+        user: IUser;
+    }
+
+    interface ChannelRecipientRemoveEvent {
+        socket;
+        channel: IDirectMessageChannel;
+        user: IUser;
+    }
+
+    interface GuildCreateEvent {
+        socket;
+        guild: IGuild;
+        /**
+         * Indicates whether the guild has recovered from unavailable state
+         */
+        becameAvailable: boolean;
+    }
+
+    interface GuildDeleteEvent {
+        socket;
+        guildId: string;
+        /**
+         * Raw guild object received from server
+         */
+        data: Object;
+        /**
+         * Function returning a raw guild object or null.
+         */
+        getCachedData(): IGuild;
+    }
+
+    interface GuildUpdateEvent {
+        socket;
+        guild: IGuild;
+        /**
+         * Function returning an object {before: ..., after: ...} containing two raw guild objects.
+         */
+        getChanges(): { before: IGuild; after: IGuild; };
+    }
+
+    interface GuildMemberAddEvent {
+        socket;
+        guild: IGuild;
+        member: IGuildMember;
+    }
+
+    interface GuildMemberRemoveEvent {
+        socket;
+        guild: IGuild;
+        user: IUser;
+        /**
+         * Raw data received from server
+         */
+        data: Object;
+        /**
+         * Function returning a raw member object or null.
+         */
+        getCachedData(): IGuildMember;
+    }
+
+    interface GuildMemberUpdateEvent {
+        socket;
+        guild: IGuild;
+        member: IGuildMember;
+        rolesAdded: IRole[];
+        rolesRemoved: IRole[];
+        previousNick: string;
+        /**
+         * Function returning an object {before: ..., after: ...} containing two raw member objects.
+         */
+        getChanges(): { before: IGuildMember; after: IGuildMember; };
+    }
+
+    interface GuildBanAddEvent {
+        socket;
+        guild: IGuild;
+        user: IUser;
+    }
+
+    interface GuildBanRemoveEvent {
+        socket;
+        guild: IGuild;
+        user: IUser;
+    }
+
+    interface GuildRoleCreateEvent {
+        socket;
+        guild: IGuild;
+        role: IRole;
+    }
+
+    interface GuildRoleUpdateEvent {
+        socket;
+        guild: IGuild;
+        role: IRole;
+        /**
+         * Function returning an object {before: ..., after: ...} containing two raw role objects.
+         */
+        getChanges(): { before: IRole; after: IRole; };
+    }
+
+    interface GuildRoleDeleteEvent {
+        socket;
+        guild: IGuild;
+        roleId: String;
+        /**
+         * Function returning a raw role object or null.
+         */
+        getCachedData(): any;
+    }
+
+    interface GuildEmojisUpdateEvent {
+        socket;
+        guild: IGuild;
+        /**
+         * Function returning an object {before: ..., after: ...} containing two full emoji arrays in format provided by Discord.
+         */
+        getChanges(): { before: any[]; after: any[]; };
+    }
+
+    interface CallCreateEvent {
+      socket;
+      channel: IDirectMessageChannel;
+      call: ICall;
+    }
+
+    interface CallDeleteEvent {
+        socket;
+        channelId: string;
+        /**
+         * Raw object received from server
+         */
+        data: Object;
+    }
+
+    interface CallUpdateEvent {
+        socket;
+        channel: IDirectMessageChannel;
+        call: ICall;
+    }
+
+    interface WebhooksUpdateEvent {
+        socket;
+        guild: IGuild;
+        channel: IChannel;
+        /**
+         * Raw object received from server
+         */
+        data: Object;
+    }
+
+    interface DiscordieDispatcher extends events.EventEmitter {
+        /**
+         * Emitted when login or gateway auth failed, or primary gateway socket disconnects, closing all open sockets.
+         * Not emitted if disconnected using client.disconnect().
+         */
+        on(event: "DISCONNECTED", cb: (e: DisconnectedEvent) => void);
+        /**
+         * Emitted when the Discordie instance is ready to use.
+         * All objects except unavailable guilds and offline members of large guilds (250+ members) will be in cache when this event fires.
+         * You can request offline members using client.Users.fetchMembers(). See documentation for IUserCollection.fetchMembers.
+         */
+        on(event: "GATEWAY_READY", cb: (e: GatewayReadyResumedEvent) => void);
+        /**
+         * Emitted after gateway connection is resumed after a disconnect.
+         * Connections can be resumable if disconnected for short period of time.
+         * Does not clear cache unlike GATEWAY_READY.
+         */
+        on(event: "GATEWAY_RESUMED", cb: (e: GatewayReadyResumedEvent) => void);
+        /**
+         * Emitted when a new voice connection is fully initialized.
+         */
+        on(event: "VOICE_CONNECTED", cb: (e: VoiceConnectedEvent) => void);
+        /**
+         * Emitted when a voice socket disconnects.
+         */
+        on(event: "VOICE_DISCONNECTED", cb: (e: VoiceDisconnectedEvent) => void);
+        /**
+         * Emitted when guild becomes unavailable. Guild is deleted from cache until another GUILD_CREATE.
+         */
+        on(event: "GUILD_UNAVAILABLE", cb: (e: GuildUnavailableEvent) => void);
+        /**
+         * Emitted when call becomes unavailable.
+         */
+        on(event: "CALL_UNAVAILABLE", cb: (e: CallUnavailableEvent) => void);
+        /**
+         * Emitted when current user is being rung in a call.
+         */
+        on(event: "CALL_RING", cb: (e: CallRingEvent) => void);
+        /**
+         * Emitted when username, avatar or discriminator difference detected in an incoming PRESENCE_UPDATE event.
+         */
+        on(event: "PRESENCE_MEMBER_INFO_UPDATE", cb: (e: PresenceMemberInfoUpdateEvent) => void);
+        /**
+         * Emitted when user leaves voice channel. Fields newChannelId/newGuildId contain ids that will appear in VOICE_CHANNEL_JOIN event that will follow if user has moved to another channel, otherwise null.
+         */
+        on(event: "VOICE_CHANNEL_LEAVE", cb: (e: VoiceChannelLeaveEvent) => void);
+        /**
+         * Emitted when user joins voice channel.
+         */
+        on(event: "VOICE_CHANNEL_JOIN", cb: (e: VoiceChannelJoinEvent) => void);
+        /**
+         * Emitted when user self mute change is detected. Manual client-side mute.
+         */
+        on(event: "VOICE_USER_SELF_MUTE", cb: (e: VoiceUserSelfMuteEvent) => void);
+        /**
+         * Emitted when user self deaf change is detected. Manual client-side deafen.
+         */
+        on(event: "VOICE_USER_SELF_DEAF", cb: (e: VoiceUserSelfDeafEvent) => void);
+        /**
+         * Emitted when user mute change is detected. Global server-side mute.
+         */
+        on(event: "VOICE_USER_MUTE", cb: (e: VoiceUserMuteEvent) => void);
+        /**
+         * Emitted when user deaf change is detected. Global server-side deafen.
+         */
+        on(event: "VOICE_USER_DEAF", cb: (e: VoiceUserDeafEvent) => void);
+        on(event: "MESSAGE_CREATE", cb: (e: MessageCreateEvent) => void);
+        /**
+         * Emitted when user deletes their message. Contains null message if not cached.
+         */
+        on(event: "MESSAGE_DELETE", cb: (e: MessageDeleteEvent) => void);
+        /**
+         * Emitted when a bot deletes more than 1 message at once.
+         */
+        on(event: "MESSAGE_DELETE_BULK", cb: (e: MessageDeleteBulkEvent) => void);
+        /**
+         * Emitted when user updates their message. Contains null message if not cached.
+         */
+        on(event: "MESSAGE_UPDATE", cb: (e: MessageUpdateEvent) => void);
+        /**
+         * Emitted when on changes for username, avatar, status or game.
+         * Emitted multiple times for each shared guild with the local user and the user presence is for.
+         * Compare user.status and user.previousStatus to detect status changes.
+         * Games can be checked with user.game and user.previousGame (and helpers for names user.gameName and user.previousGameName) respectively.
+         ** Note: Property member will contain IUser instance if user has left the guild.
+         */
+        on(event: "PRESENCE_UPDATE", cb: (e: PresenceUpdateEvent) => void);
+        on(event: "TYPING_START", cb: (e: TypingStartEvent) => void);
+        on(event: "CHANNEL_CREATE", cb: (e: ChannelCreateEvent) => void);
+        on(event: "CHANNEL_DELETE", cb: (e: ChannelDeleteEvent) => void);
+        on(event: "CHANNEL_UPDATE", cb: (e: ChannelUpdateEvent) => void);
+        /**
+         * Emitted when a user has been added to a group dm.
+         */
+        on(event: "CHANNEL_RECIPIENT_ADD", cb: (e: ChannelRecipientAddEvent) => void);
+        /**
+         * Emitted when a user has been removed or left from a group dm.
+         */
+        on(event: "CHANNEL_RECIPIENT_REMOVE", cb: (e: ChannelRecipientRemoveEvent) => void);
+        on(event: "GUILD_CREATE", cb: (e: GuildCreateEvent) => void);
+        on(event: "GUILD_DELETE", cb: (e: GuildDeleteEvent) => void);
+        on(event: "GUILD_UPDATE", cb: (e: GuildUpdateEvent) => void);
+        on(event: "GUILD_MEMBER_ADD", cb: (e: GuildMemberAddEvent) => void);
+        /**
+         * Emitted when any other member of a joined guild leaves, events for self are blocked internally due to race condition between GUILD_DELETE and GUILD_MEMBER_REMOVE.
+         */
+        on(event: "GUILD_MEMBER_REMOVE", cb: (e: GuildMemberRemoveEvent) => void);
+        on(event: "GUILD_MEMBER_UPDATE", cb: (e: GuildMemberUpdateEvent) => void);
+        on(event: "GUILD_BAN_ADD", cb: (e: GuildBanAddEvent) => void);
+        on(event: "GUILD_BAN_REMOVE", cb: (e: GuildBanRemoveEvent) => void);
+        on(event: "GUILD_ROLE_CREATE", cb: (e: GuildRoleCreateEvent) => void);
+        on(event: "GUILD_ROLE_UPDATE", cb: (e: GuildRoleUpdateEvent) => void);
+        on(event: "GUILD_ROLE_DELETE", cb: (e: GuildRoleDeleteEvent) => void);
+        on(event: "GUILD_EMOJIS_UPDATE", cb: (e: GuildEmojisUpdateEvent) => void);
+        on(event: "CALL_CREATE", cb: (e: CallCreateEvent) => void);
+        on(event: "CALL_DELETE", cb: (e: CallDeleteEvent) => void);
+        on(event: "CALL_UPDATE", cb: (e: CallUpdateEvent) => void);
+        /**
+         * Emitted when a webhook is updated.
+         */
+        on(event: "WEBHOOKS_UPDATE", cb: (e: WebhooksUpdateEvent) => void);
+    }
+
     class Discordie {
         /**
          * Primary event bus.
          */
-        public Dispatcher: events.EventEmitter;
+        public Dispatcher: DiscordieDispatcher;
         /**
          * Represents current user.
          */

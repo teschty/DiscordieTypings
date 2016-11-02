@@ -2,5 +2,4 @@
 
 import * as Discordie from "discordie";
 
-let d = new Discordie();
-d.
+let client = new Discordie();
