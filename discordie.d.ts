@@ -120,6 +120,7 @@ declare module "discordie" {
     }
 
     interface VoiceChannelJoinEvent {
+        socket;
         user: IUser;
         channel: IChannel;
         channelId: string;
