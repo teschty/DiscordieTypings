@@ -5,7 +5,7 @@ declare module "discordie" {
     class VoiceConnectionInfo {
         gatewaySocket;
         voiceSocket;
-        public voiceConnection: IVoiceConnection;
+        public voiceConnection: Discordie.IVoiceConnection;
     }
 
     class GatewayReconnectHandler {
@@ -59,12 +59,12 @@ declare module "discordie" {
 
     interface VoiceConnectedEvent {
         socket;
-        voiceConnection: IVoiceConnection;
+        voiceConnection: Discordie.IVoiceConnection;
     }
 
     interface VoiceDisconnectedEvent {
         socket;
-        voiceConnection: IVoiceConnection;
+        voiceConnection: Discordie.IVoiceConnection;
         error: Error;
         /**
          * Indicating whether was caused by IVoiceChannel.leave() or Discordie.disconnect(), also true if channel/guild has been deleted
@@ -88,9 +88,9 @@ declare module "discordie" {
 
     interface CallRingEvent {
         socket;
-        channel: IDirectMessageChannel;
+        channel: Discordie.IDirectMessageChannel;
     }
-    
+
     interface PresenceMemberInfoUpdateEvent {
         socket;
         /**
@@ -105,8 +105,8 @@ declare module "discordie" {
 
     interface VoiceChannelLeaveEvent {
         socket;
-        user: IUser;
-        channel: IChannel;
+        user: Discordie.IUser;
+        channel: Discordie.IChannel;
         channelId: string;
         guildId: string;
         /**
@@ -121,16 +121,16 @@ declare module "discordie" {
 
     interface VoiceChannelJoinEvent {
         socket;
-        user: IUser;
-        channel: IChannel;
+        user: Discordie.IUser;
+        channel: Discordie.IChannel;
         channelId: string;
         guildId: string;
     }
 
     interface VoiceUserSelfMuteEvent {
         socket;
-        user: IUser;
-        channel: IChannel;
+        user: Discordie.IUser;
+        channel: Discordie.IChannel;
         channelId: string;
         guildId: string;
         /**
@@ -141,8 +141,8 @@ declare module "discordie" {
 
     interface VoiceUserSelfDeafEvent {
         socket;
-        user: IUser;
-        channel: IChannel;
+        user: Discordie.IUser;
+        channel: Discordie.IChannel;
         channelId: string;
         guildId: string;
         /**
@@ -153,8 +153,8 @@ declare module "discordie" {
 
     interface VoiceUserMuteEvent {
         socket;
-        user: IUser;
-        channel: IChannel;
+        user: Discordie.IUser;
+        channel: Discordie.IChannel;
         channelId: string;
         guildId: string;
         /**
@@ -165,8 +165,8 @@ declare module "discordie" {
 
     interface VoiceUserDeafEvent {
         socket;
-        user: IUser;
-        channel: IChannel;
+        user: Discordie.IUser;
+        channel: Discordie.IChannel;
         channelId: string;
         guildId: string;
         /**
@@ -177,14 +177,14 @@ declare module "discordie" {
 
     interface MessageCreateEvent {
         socket;
-        message: IMessage;
+        message: Discordie.IMessage;
     }
 
     interface MessageDeleteEvent {
         socket;
         channelId: string;
         messageId: string;
-        message: IMessage;
+        message: Discordie.IMessage;
     }
 
     interface MessageDeleteBulkEvent {
@@ -194,12 +194,12 @@ declare module "discordie" {
         /**
          * Array of known deleted messages, can be empty
          */
-        messages: IMessage[];
+        messages: Discordie.IMessage[];
     }
 
     interface MessageUpdateEvent {
         socket;
-        message: IMessage;
+        message: Discordie.IMessage;
         /**
          * Raw message object received from server
          */
@@ -208,24 +208,24 @@ declare module "discordie" {
 
     interface PresenceUpdateEvent {
         socket;
-        guild: IGuild;
-        user: IUser;
-        member: IGuildMember | IUser;
+        guild: Discordie.IGuild;
+        user: Discordie.IUser;
+        member: Discordie.IGuildMember | Discordie.IUser;
     }
 
     interface TypingStartEvent {
         socket;
-        user: IUser;
+        user: Discordie.IUser;
         /**
          * Unix timestamp
          */
         timestamp: number;
-        channel: IChannel;
+        channel: Discordie.IChannel;
     }
 
     interface ChannelCreateEvent {
         socket;
-        channel: IChannel;
+        channel: Discordie.IChannel;
     }
 
     interface ChannelDeleteEvent {
@@ -239,28 +239,28 @@ declare module "discordie" {
 
     interface ChannelUpdateEvent {
         socket;
-        channel: IChannel;
+        channel: Discordie.IChannel;
         /**
          * Function returning an object {before: ..., after: ...} containing two raw channel objects.
          */
-        getChanges(): { before: IChannel; after: IChannel; }
+        getChanges(): { before: Discordie.IChannel; after: Discordie.IChannel; }
     }
 
     interface ChannelRecipientAddEvent {
         socket;
-        channel: IDirectMessageChannel;
-        user: IUser;
+        channel: Discordie.IDirectMessageChannel;
+        user: Discordie.IUser;
     }
 
     interface ChannelRecipientRemoveEvent {
         socket;
-        channel: IDirectMessageChannel;
-        user: IUser;
+        channel: Discordie.IDirectMessageChannel;
+        user: Discordie.IUser;
     }
 
     interface GuildCreateEvent {
         socket;
-        guild: IGuild;
+        guild: Discordie.IGuild;
         /**
          * Indicates whether the guild has recovered from unavailable state
          */
@@ -277,28 +277,28 @@ declare module "discordie" {
         /**
          * Function returning a raw guild object or null.
          */
-        getCachedData(): IGuild;
+        getCachedData(): Discordie.IGuild;
     }
 
     interface GuildUpdateEvent {
         socket;
-        guild: IGuild;
+        guild: Discordie.IGuild;
         /**
          * Function returning an object {before: ..., after: ...} containing two raw guild objects.
          */
-        getChanges(): { before: IGuild; after: IGuild; };
+        getChanges(): { before: Discordie.IGuild; after: Discordie.IGuild; };
     }
 
     interface GuildMemberAddEvent {
         socket;
-        guild: IGuild;
-        member: IGuildMember;
+        guild: Discordie.IGuild;
+        member: Discordie.IGuildMember;
     }
 
     interface GuildMemberRemoveEvent {
         socket;
-        guild: IGuild;
-        user: IUser;
+        guild: Discordie.IGuild;
+        user: Discordie.IUser;
         /**
          * Raw data received from server
          */
@@ -306,53 +306,53 @@ declare module "discordie" {
         /**
          * Function returning a raw member object or null.
          */
-        getCachedData(): IGuildMember;
+        getCachedData(): Discordie.IGuildMember;
     }
 
     interface GuildMemberUpdateEvent {
         socket;
-        guild: IGuild;
-        member: IGuildMember;
-        rolesAdded: IRole[];
-        rolesRemoved: IRole[];
+        guild: Discordie.IGuild;
+        member: Discordie.IGuildMember;
+        rolesAdded: Discordie.IRole[];
+        rolesRemoved: Discordie.IRole[];
         previousNick: string;
         /**
          * Function returning an object {before: ..., after: ...} containing two raw member objects.
          */
-        getChanges(): { before: IGuildMember; after: IGuildMember; };
+        getChanges(): { before: Discordie.IGuildMember; after: Discordie.IGuildMember; };
     }
 
     interface GuildBanAddEvent {
         socket;
-        guild: IGuild;
-        user: IUser;
+        guild: Discordie.IGuild;
+        user: Discordie.IUser;
     }
 
     interface GuildBanRemoveEvent {
         socket;
-        guild: IGuild;
-        user: IUser;
+        guild: Discordie.IGuild;
+        user: Discordie.IUser;
     }
 
     interface GuildRoleCreateEvent {
         socket;
-        guild: IGuild;
-        role: IRole;
+        guild: Discordie.IGuild;
+        role: Discordie.IRole;
     }
 
     interface GuildRoleUpdateEvent {
         socket;
-        guild: IGuild;
-        role: IRole;
+        guild: Discordie.IGuild;
+        role: Discordie.IRole;
         /**
          * Function returning an object {before: ..., after: ...} containing two raw role objects.
          */
-        getChanges(): { before: IRole; after: IRole; };
+        getChanges(): { before: Discordie.IRole; after: Discordie.IRole; };
     }
 
     interface GuildRoleDeleteEvent {
         socket;
-        guild: IGuild;
+        guild: Discordie.IGuild;
         roleId: String;
         /**
          * Function returning a raw role object or null.
@@ -362,7 +362,7 @@ declare module "discordie" {
 
     interface GuildEmojisUpdateEvent {
         socket;
-        guild: IGuild;
+        guild: Discordie.IGuild;
         /**
          * Function returning an object {before: ..., after: ...} containing two full emoji arrays in format provided by Discord.
          */
@@ -370,9 +370,9 @@ declare module "discordie" {
     }
 
     interface CallCreateEvent {
-      socket;
-      channel: IDirectMessageChannel;
-      call: ICall;
+        socket;
+        channel: Discordie.IDirectMessageChannel;
+        call: Discordie.ICall;
     }
 
     interface CallDeleteEvent {
@@ -386,14 +386,14 @@ declare module "discordie" {
 
     interface CallUpdateEvent {
         socket;
-        channel: IDirectMessageChannel;
-        call: ICall;
+        channel: Discordie.IDirectMessageChannel;
+        call: Discordie.ICall;
     }
 
     interface WebhooksUpdateEvent {
         socket;
-        guild: IGuild;
-        channel: IChannel;
+        guild: Discordie.IGuild;
+        channel: Discordie.IChannel;
         /**
          * Raw object received from server
          */
@@ -531,36 +531,36 @@ declare module "discordie" {
         /**
          * Represents current user.
          */
-        public User: IAuthenticatedUser;
+        public User: Discordie.IAuthenticatedUser;
         /**
          * Interface to a collection containing all "Discord Servers" (internally called guilds) current session is connected to. Does not contain unavailable guilds.
          */
-        public Guilds: IGuildCollection;
+        public Guilds: Discordie.IGuildCollection;
         /**
          * Interface to a collection containing all public channels current session is connected to.
          */
-        public Channels: IChannelCollection;
+        public Channels: Discordie.IChannelCollection;
         /**
          * Interface to a collection containing all users current session has been exposed to.
          * Contains only online users after READY. See documentation for IUserCollection.fetchMembers(guilds) if you want to load offline members too.
          */
-        public Users: IUserCollection;
+        public Users: Discordie.IUserCollection;
         /**
          * Interface to a collection containing all private (direct message) channels current session is connected to.
          */
-        public DirectMessageChannels: IDirectMessageChannelCollection;
+        public DirectMessageChannels: Discordie.IDirectMessageChannelCollection;
         /**
          * Interface to a collection containing all cached messages.
          */
-        public Messages: IMessageCollection;
+        public Messages: Discordie.IMessageCollection;
         /**
          * An instance of IInviteManager.
          */
-        public Invites: IInviteManager;
+        public Invites: Discordie.IInviteManager;
         /**
          * An instance of IWebhookManager.
          */
-        public Webhooks: IWebhookManager;
+        public Webhooks: Discordie.IWebhookManager;
         /**
          * An array of VoiceConnectionInfo.
          */
@@ -650,7 +650,7 @@ declare module "discordie" {
         /**
          * Gets the voice connection this instance is bound to.
          */
-        public voiceConnection: IVoiceConnection;
+        public voiceConnection: Discordie.IVoiceConnection;
 
         /**
          * Connects pipe into AudioEncoderStream of the bound voice connection.
@@ -681,7 +681,7 @@ declare module "discordie" {
         /**
          * Gets the voice connection this instance is bound to.
          */
-        public voiceConnection: IVoiceConnection;
+        public voiceConnection: Discordie.IVoiceConnection;
 
         /**
          * Connects pipe into AudioEncoderStream of the bound voice connection.
@@ -712,7 +712,7 @@ declare module "discordie" {
         /**
          * Gets the voice connection this instance is bound to.
          */
-        public voiceConnection: IVoiceConnection;
+        public voiceConnection: Discordie.IVoiceConnection;
 
         /**
          * Connects pipe into AudioEncoderStream of the bound voice connection.
@@ -745,7 +745,7 @@ declare module "discordie" {
          * Increments when a chunk is processed.
          */
         public timestamp: number;
-        
+
         /**
          * Resets current timestamp.
          */
@@ -756,512 +756,1098 @@ declare module "discordie" {
         unpipeAll();
     }
 
-    interface IAuthenticatedUser {
-        id: String;
-        username: String;
-        discriminator: String;
-        email: String;
-        verified: boolean;
-        status: String;
-        avatar: String;
-        token: String;
-        bot: boolean;
-        mfa_enabled: boolean;
-        game: Object;
-        afk: boolean;
 
-        registeredAt: Date;
-        avatarURL: String;
-        isClaimedAccount: boolean;
-        gameName: String;
-        mention: String;
-        nickMention: String;
-        createdAt: Date;
+
+    namespace Discordie {
+        interface IAuthenticatedUser {
+            id: String;
+            username: String;
+            discriminator: String;
+            email: String;
+            verified: boolean;
+            status: String;
+            avatar: String;
+            token: String;
+            bot: boolean;
+            mfa_enabled: boolean;
+            game: Object;
+            afk: boolean;
+
+            /**
+             * Gets date and time the account was registered (created) at.
+             */
+            registeredAt: Date;
+            /**
+             * Gets current avatar URL.
+             */
+            avatarURL: String;
+            /**
+             * Gets a value indicating whether the account is claimed.
+             */
+            isClaimedAccount: boolean;
+            /**
+             * Name of the game current user is playing.
+             */
+            gameName: String;
+            /**
+             * Creates a mention from this user's id.
+             */
+            mention: String;
+            /**
+             * Creates a nickname mention from this user's id.
+             */
+            nickMention: String;
+            /**
+             * Gets date and time this object was created at.
+             */
+            createdAt: Date;
+        }
+
+        interface ICall {
+            channel_id: String;
+            message_id: String;
+            region: String;
+            unavailable: boolean;
+
+            /**
+             * Gets date and time this call was created at.
+             */
+            createdAt: Date;
+            /**
+             * Checks if the call is ringing for current user.
+             */
+            isRinging: boolean;
+            ringing: IUser[];
+        }
+
+        interface InviteOptions {
+            /** 
+             * Time in seconds
+             */
+            max_age?: number;
+            max_uses?: number;
+            temporary?: boolean;
+        }
+
+        interface IChannel {
+            id: String;
+            name: String;
+            topic: String;
+            position: Number;
+            type: Number;
+            guild_id: String;
+            recipients: Set<IUser>;
+            permission_overwrites: IPermissionOverwrite[];
+            bitrate: Number;
+            user_limit: Number;
+            owner_id: String;
+            icon: String;
+
+            /**
+             * Removed in API v6. Use isPrivate instead.
+             */
+            is_private: boolean;
+            /**
+             * Checks whether this channel is a direct message channel or a group.
+             */
+            isPrivate: boolean;
+            /**
+             * Gets guild of this channel.
+             */
+            guild: IGuild;
+            /**
+             * Gets date and time this object was created at.
+             */
+            createdAt: Date;
+
+            /**
+             * Makes a request to create an invite for this channel.
+             */
+            createInvite(options: InviteOptions): Promise<Object>;
+            /**
+             * Makes a request to create a permission overwrite for this channel.
+             */
+            createPermissionOverwrite(roleOrMember: IAuthenticatedUser | IRole | IGuildMember, allow?: IPermissions | number, deny?: IPermissions | number): Promise<IPermissionOverwrite>;
+            /**
+             * Makes a request to update this channel.
+             */
+            update(name?: string, topic?: string, bitrate?: number, userLimit?: number): Promise<IChannel>;
+            /**
+             * Makes a request to create a new channel with permission overwrites of this channel.
+             */
+            clone(name: string, type?: number, bitrate?: number, userLimit?: number);
+            /**
+             * Moves this channel to position and makes a batch channel update request.
+             */
+            setPosition(position: number): Promise<void>;
+            /**
+             * Makes a request to delete this channel.
+             */
+            delete(): Promise<void>;
+            /**
+             * Makes a request to get a list of invites for this channel.
+             */
+            getInvites(): Promise<Object[]>;
+        }
+
+        interface IChannelCollection {
+            /**
+             * Number of elements in this collection.
+             */
+            length: Number;
+            /**
+             * Number of elements in this collection. Alias for .length.
+             */
+            size: Number;
+
+            /**
+             * Creates an array of IChannel (ITextChannel and IVoiceChannel) for guild.
+             */
+            forGuild(guild: IGuild): IChannel[];
+            /**
+             * Creates an array of ITextChannel for guild.
+             */
+            textForGuild(guild: IGuild): ITextChannel[];
+            /**
+             * Creates an array of IVoiceChannel for guild.
+             */
+            voiceForGuild(guild: IGuild): IVoiceChannel[];
+            /**
+             * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
+             */
+            getBy(key: string, value): IChannel;
+            /**
+             * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
+             */
+            get(id: string): IChannel;
+            /**
+             * Creates a new array with all elements that pass the test implemented by the provided function.
+             */
+            filter(fn: (c: IChannel) => boolean): IChannel[];
+            /**
+             * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
+             */
+            find(fn: (c: IChannel) => boolean): Object;
+            /**
+             * Executes a provided function once per element.
+             */
+            forEach(fn: () => IChannel);
+            /**
+             * Creates a new array with the results of calling a provided function on every element in this collection.
+             */
+            map(fn): any[];
+            /**
+             * Creates a new array with elements of this collection.
+             */
+            toArray(): IChannel[];
+        }
+
+        interface FetchMessagesResult {
+            messages: IMessage[];
+            limit: number;
+            before: string;
+            after: string;
+        }
+
+        interface FetchPinnedResult {
+            channelId: string;
+            messages: IMessage[];
+        }
+
+        interface IDirectMessageChannel {
+            id: String;
+            name: String;
+            topic: String;
+            position: Number;
+            type: Number;
+            guild_id: String;
+            permission_overwrites: any[];
+            bitrate: Number;
+            user_limit: Number;
+            owner_id: String;
+            icon: String;
+
+            /**
+             * Deprecated: Removed in API v6. Use isPrivate instead.
+             */
+            is_private: boolean;
+            /**
+             * Checks whether this channel is a direct message channel or a group.
+             */
+            isPrivate: boolean;
+            /**
+             * Returns the owner of the private channel.
+             * Returns null if the owner user is not in cache or there is no owner.
+             */
+            owner: IAuthenticatedUser | IUser;
+            /**
+             * Creates a string URL of image icon of this channel.
+             */
+            iconURL: String;
+            /**
+             * Gets first recipient of this channel.
+             * Returns null if this channel is invalid or has no recipients.
+             * * Deprecated: Use recipients instead.
+             */
+            recipient: IUser;
+            /**
+             * Gets a value indicating whether all messages were loaded.
+             */
+            allMessagesLoaded: boolean;
+            /**
+             * Creates an array of cached messages in this channel, sorted in order of arrival (message cache is sorted on message insertion, not when this getter is invoked).
+             * Returns an empty array if channel no longer exists.
+             */
+            messages: IMessage[];
+            /**
+             * Creates an array of cached pinned messages in this channel.
+             * Pinned message cache is updated only if all pinned messages have been loaded with IDirectMessageChannel.fetchPinned().
+             * Returns an empty array if channel no longer exists or if pinned messages have not been fetched yet.
+             */
+            pinnedMessages: IMessage[];
+            /**
+             * Checks whether current user is in the call.
+             */
+            joinedCall: boolean;
+            /**
+             * Creates an array of users in the call.
+             * Returns null if call does not exist in cache or has not started yet.
+             */
+            usersInCall: IUser[];
+            /**
+             * Gets call from cache.
+             * Returns null if call does not exist in cache or has not started yet.
+             */
+            call: ICall;
+            /**
+             * Gets recipients of this channel.
+             */
+            recipients: IUser[];
+            /**
+             * Gets date and time this object was created at.
+             */
+            createdAt: Date;
+
+            /**
+             * Checks whether the user is the owner of the private channel.
+             */
+            isOwner(user: IGuildMember | IUser | IAuthenticatedUser | string): boolean;
+            /**
+             * Makes a request to fetch messages for this channel.
+             * Discord API does not allow fetching more than 100 messages at once.
+             */
+            fetchMessages(limit?: number, before?: IMessage | string, after?: IMessage | string): Promise<FetchMessagesResult>;
+            /**
+             * Makes a request to fetch pinned messages for this channel.
+             */
+            fetchPinned(): Promise<FetchPinnedResult>;
+            /**
+             * Makes a request to send a message to this channel. Messages over 2000 characters will be rejected by the server.
+             * Use uploadFile if you want to send a message with an attachment.
+             */
+            sendMessage(content: string | string[], mentions?: IUser | IGuildMember | IUser[] | IGuildMember[], tts?: boolean): Promise<IMessage>;
+            /**
+             * Makes a request to upload data to this channel. Images require a filename with a valid extension to actually be uploaded.
+             */
+            uploadFile(readableStream: Buffer | NodeJS.ReadableStream | string, filename: string, content?: string, tts?: boolean): Promise<IMessage>;
+            /**
+             * Makes a request to send typing status for this channel.
+             * Discord client displays it for 10 seconds, sends every 5 seconds. Stops showing typing status if receives a message from the user.
+             */
+            sendTyping(): Promise<void>;
+            /**
+             * Makes a request to close this channel (direct message channels only).
+             */
+            close(): Promise<void>;
+            /**
+             * Makes a request to ring specified recipients. Has no effect if call has not started yet.
+             * Bot accounts cannot use this endpoint.
+             */
+            ring(recipients?: (IUser | string)[]): Promise<void>;
+            /**
+             * Makes a request to decline an incoming call (if no arguments passed) or stop ringing for specified recipients.
+             * Bot accounts cannot use this endpoint.
+             */
+            stopRinging(recipients?: (IUser | string)[]): Promise<void>;
+            /**
+             * Makes a request to change the server region hosting the call.
+             * Bot accounts cannot use this endpoint.
+             */
+            changeCallRegion(region: string): Promise<void>;
+            /**
+             * Makes a request to add a user to this private channel.
+             * Bot accounts cannot use this endpoint.
+             */
+            addRecipient(user: IUser | IGuildMember): Promise<void>;
+            /**
+             * Makes a request to remove a user from this private channel.
+             * Bot accounts cannot use this endpoint.
+             */
+            removeRecipient(user: IUser | IGuildMember): Promise<void>;
+            /**
+             * Makes a request to set a name for this private channel.
+             */
+            setName(name: string): Promise<IDirectMessageChannel>;
+            /**
+             * Makes a request to set an icon for this private channel.
+             */
+            setIcon(icon: string | Buffer): Promise<IDirectMessageChannel>;
+            /**
+             * Creates or joins a call. Only one call can be connected at the same time.
+             * Joining calls with bot accounts is not supported.
+             */
+            joinCall(selfMute?: boolean, selfDeaf?: boolean): Promise<VoiceConnectionInfo>;
+            /**
+             * Leaves call if joined.
+             */
+            leaveCall();
+            /**
+             * Retrieves VoiceConnectionInfo for the call of this channel.
+             */
+            getVoiceConnectionInfo(): VoiceConnectionInfo;
+            /**
+             * Fetches call info through gateway socket.
+             * Currently there are no ways to fetch call info for all channels at once.
+             */
+            fetchCall(): Promise<ICall>;
+        }
+
+        interface IDirectMessageChannelCollection {
+            /**
+             * Number of elements in this collection.
+             */
+            length: Number;
+            /**
+             * Number of elements in this collection. Alias for .length.
+             */
+            size: Number;
+
+            /**
+             * Gets a DM channel from cache or makes a request to create one.
+             */
+            getOrOpen(recipient: IUser | IGuildMember | string): Promise<IDirectMessageChannel>;
+            /**
+             * Makes a request to create a DM channel.
+             */
+            open(recipient: IUser | IGuildMember | string): Promise<IDirectMessageChannel>;
+            /**
+             * Makes a request to create a group DM channel.
+             */
+            createGroupDM(recipients?: (IUser | IGuildMember | string)[]): Promise<IDirectMessageChannel>;
+            /**
+             * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
+             */
+            getBy(key, value): IDirectMessageChannel;
+            /**
+             * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
+             */
+            get(id: string): IDirectMessageChannel;
+            /**
+             * Creates a new array with all elements that pass the test implemented by the provided function.
+             */
+            filter(fn: (d: IDirectMessageChannel) => boolean): IDirectMessageChannel[];
+            /**
+             * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
+             */
+            find(fn: (d: IDirectMessageChannel) => boolean): IDirectMessageChannel;
+            /**
+             * Executes a provided function once per element.
+             */
+            forEach(fn: (d: IDirectMessageChannel) => void);
+            /**
+             * Creates a new array with the results of calling a provided function on every element in this collection.
+             */
+            map(fn: (d: IDirectMessageChannel) => any): any[];
+            /**
+             * Creates a new array with elements of this collection.
+             */
+            toArray(): IDirectMessageChannel[];
+        }
+
+        interface Widget {
+            enabled: boolean;
+            channel_id: string;
+        }
+
+        interface IGuild {
+            id: String;
+            name: String;
+            owner_id: String;
+            icon: String;
+            splash: String;
+            features: Set<any>;
+            emojis: Object[];
+            default_message_notifications: Number;
+            afk_channel_id: String;
+            afk_timeout: Number;
+            verification_level: Number;
+            region: String;
+            member_count: Number;
+            large: Boolean;
+            mfa_level: Number;
+            joined_at: String;
+
+            /**
+             * Creates an acronym string for this guild. (Text that shows up as guild icon in the client if there is no image icon.)
+             */
+            acronym: String;
+            /**
+             * Creates a string URL of image icon of this guild.
+             */
+            iconURL: String;
+            /**
+             * Creates a string URL of invite splash image of this guild.
+             */
+            splashURL: String;
+            /**
+             * Returns afk channel of this guild.
+             */
+            afk_channel: IChannel;
+            /**
+             * Returns the owner of this guild.
+             * Returns null if the owner user is not in cache.
+             * See .isOwner(user) if you want to safely check if the user is owner.
+             */
+            owner: IAuthenticatedUser | IUser;
+            /**
+             * Creates an array of text and voice channels of this guild.
+             */
+            channels: IChannel[];
+            /**
+             * Creates an array of text channels of this guild.
+             */
+            textChannels: ITextChannel[];
+            /**
+             * Creates an array of voice channels of this guild.
+             */
+            voiceChannels: IVoiceChannel[];
+            /**
+             * Returns general channel of this guild.
+             */
+            generalChannel: ITextChannel;
+            /**
+             * Creates an array containing members of this guild.
+             */
+            members: IGuildMember[];
+            /**
+             * Creates an array of roles of this guild.
+             */
+            roles: IRole[];
+            /**
+             * Gets date and time this object was created at.
+             */
+            createdAt: Date;
+
+            /**
+             * Checks whether the user is the owner of this guild.
+             */
+            isOwner(user: IGuildMember | IUser | IAuthenticatedUser | string): boolean;
+            /**
+             * Makes a request to edit this guild, substituting undefined or null properties with current values.
+             * Passing null in icon or afkChannelId will remove current icon/channel. Use undefined instead of null in this case.
+             */
+            edit(name?: string, icon?: string | Buffer, region?: string, afkChannelId?: IChannel | string,
+                afkTimeout?: number, verificationLevel?: number, defaultMessageNotifications?: number): Promise<IGuild>;
+            /**
+             * Makes a request to create a channel in this guild.
+             */
+            createChannel(type: number, name: string, permissionOverwrites?: IPermissionOverwrite, bitrate?: number,
+                userLimit?: number): Promise<ITextChannel | IVoiceChannel>;
+            /**
+             * Makes a request to create a role in this guild.
+             */
+            createRole(): Promise<IRole>;
+            /**
+             * Makes a request to create an invite for general channel in this guild.
+             * See IChannel.createInvite for more info.
+             */
+            createInvite(options: InviteOptions): Promise<Object>;
+            /**
+             * Makes a request to delete this guild.
+             * Returns a rejected promise if the user is not owner.
+             */
+            delete(): Promise<void>;
+            /**
+             * Makes a request to delete this guild.
+             * Returns a rejected promise if the user is owner.
+             */
+            leave(): Promise<void>;
+            /**
+             * Makes a request to ban a user (does not have to be a member of the guild).
+             * Additionally delete deleteMessageForDays number of days worth of their messages from all channels of the guild.
+             */
+            ban(user: IUser | string, deleteMessageForDays: number): Promise<void>;
+            /**
+             * Makes a request to unban a user.
+             */
+            unban(user: IUser | string): Promise<void>;
+            /**
+             * Makes a request to get ban list of this guild.
+             */
+            getBans(): Promise<IUser[]>;
+            /**
+             * Makes a request to get estimate of members affected by prune request.
+             * Promise resolves with an Object with following structure:
+             */
+            getPruneEstimate(days: number): Promise<{ guildId: number; days: number; estimate: number; }>;
+            /**
+             * Makes a request to prune members.
+             * Promise resolves with an Object with following structure:
+             */
+            pruneMembers(days: number): Promise<{ guildId: string; days: number; pruned: number; }>;
+            /**
+             * Makes a request to get a list of invites of this guild.
+             */
+            getInvites(): Promise<Object[]>;
+            /**
+             * Makes a request to get a list of voice regions available for this guild.
+             */
+            fetchRegions(): Promise<Object[]>;
+            /**
+             * Makes a request to transfer ownership of this guild to user.
+             */
+            transferOwnership(user: IGuildMember | IUser | string): Promise<IGuild>;
+            /**
+             * Makes a request to get widget (external embed) settings.
+             * Promise resolves with an Object with following structure:
+             */
+            getWidget(): Promise<Widget>;
+            /**
+             * Makes a request to set widget (external embed) settings.
+             */
+            editWidget(options: Widget): Promise<Widget>;
+            /**
+             * Makes a request to fetch emojis for this guild.
+             * Only user and whitelisted bot accounts can use this endpoint.
+             * Promise resolves with an array of Objects with following structure:
+             */
+            fetchEmoji(): Promise<Object[]>;
+            /**
+             * Makes a request to create an emoji.
+             * Returned object does not contain user property.
+             * Only user and whitelisted bot accounts can use this endpoint.
+             */
+            uploadEmoji(image: Buffer | string, name: string): Promise<Object>;
+            /**
+             * Makes a request to delete the specified emoji.
+             * Only user and whitelisted bot accounts can use this endpoint.
+             */
+            deleteEmoji(emoji: Object | string): Promise<Object>;
+            /**
+             * Makes a request to edit the specified emoji.
+             * Returned object does not contain user property.
+             * Only user and whitelisted bot accounts can use this endpoint.
+             */
+            editEmoji(emoji: Object | string, options: { name: string; roles: string[]; }): Promise<Object>;
+            /**
+             * Creates a string URL of an emoji.
+             */
+            getEmojiURL(): String;
+        }
+
+        interface IGuildCollection {
+            /**
+             * Number of elements in this collection.
+             */
+            length: Number;
+            /**
+             * Number of elements in this collection. Alias for .length.
+             */
+            size: Number;
+            /**
+             * Makes a request to create a guild.
+             */
+            create(name: string, region: string, icon?: Buffer, roles?: (IRole | Object)[], channels?: (IChannel | Object)[],
+                verificationLevel?: number, defaultMessageNotifications?: number): Promise<IGuild>;
+            /**
+             * Makes a request to get a default list of voice regions. Use IGuild.fetchRegions for getting guild-specific list.
+             */
+            fetchRegions(): Promise<Object[]>;
+            /**
+             * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
+             */
+            getBy(key, value): IGuild;
+            /**
+             * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
+             */
+            get(id: string): IGuild;
+            /**
+             * Creates a new array with all elements that pass the test implemented by the provided function.
+             */
+            filter(fn: (g: IGuild) => boolean): IGuild[];
+            /**
+             * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
+             */
+            find(fn: (g: IGuild) => boolean): IGuild;
+            /**
+             * Executes a provided function once per element.
+             */
+            forEach(fn: (g: IGuild) => void);
+            /**
+             * Creates a new array with the results of calling a provided function on every element in this collection.
+             */
+            map(fn: (g: IGuild) => any): any[];
+            /**
+             * Creates a new array with elements of this collection.
+             */
+            toArray(): IGuild[];
+        }
+
+        interface IGuildMember {
+            id: String;
+            guild_id: String;
+            nick: String;
+            mute: boolean;
+            deaf: boolean;
+            self_mute: boolean;
+            self_deaf: boolean;
+            joined_at: String;
+            username: String;
+            discriminator: String;
+            avatar: String;
+            bot: boolean;
+
+            /**
+             * Current status of the member.
+             */
+            status: String;
+            /**
+             * Current game the member is playing.
+             */
+            game: Object;
+            /**
+             * Name of the current game the member is playing.
+             */
+            gameName: String;
+            /**
+             * Previous status of the member.
+             */
+            previousStatus: String;
+            /**
+             * Previous game the member was playing.
+             */
+            previousGame: Object;
+            /**
+             * Name of the previous game the member was playing.
+             */
+            previousGameName: String;
+            /**
+             * Gets guild of this member.
+             */
+            guild: IGuild;
+            /**
+             * Gets nick of this member if set, otherwise returns username.
+             */
+            name: String;
+            /**
+             * Creates an array of roles assigned to this member.
+             */
+            roles: IRole[];
+            /**
+             * Gets date and time the account was registered (created) at.
+             */
+            registeredAt: Date;
+            /**
+             * Gets current avatar URL.
+             */
+            avatarURL: String;
+            /**
+             * Creates a mention from this user's id.
+             */
+            mention: String;
+            /**
+             * Creates a nickname mention from this user's id.
+             */
+            nickMention: String;
+            /**
+             * Returns true if this is a non-user bot object such as webhook-bot.
+             */
+            isWebhook: boolean;
+            /**
+             * Gets date and time this object was created at.
+             */
+            createdAt: Date;
+
+            /**
+             * Gets the first voice channel that this member is currently in.
+             */
+            getVoiceChannel(): IVoiceChannel;
+            /**
+             * Makes a request to kick this member (from the guild they belong to).
+             */
+            kick(): Promise<void>;
+            /**
+             * Makes a request to ban this member (from the guild they belong to).
+             * Additionally delete deleteMessageForDays number of days worth of their messages from all channels of the guild.
+             */
+            ban(deleteMessageForDays: number): Promise<void>;
+            /**
+             * Makes a request to unban this member (from the guild they belonged to).
+             */
+            unban(): Promise<void>;
+            /**
+             * Makes a request to mute this member globally in the guild.
+             * Returns a resolved promise if the member is already muted.
+             */
+            serverMute(): Promise<void>;
+            /**
+             * Makes a request to unmute this member globally in the guild.
+             * Returns a resolved promise if the member is already unmuted.
+             */
+            serverUnmute(): Promise<void>;
+            /**
+             * Makes a request to deafen this member globally in the guild.
+             * Returns a resolved promise if the member is already deafened.
+             */
+            serverDeafen(): Promise<void>;
+            /**
+             * Makes a request to undeafen this member globally in the guild.
+             * Returns a resolved promise if the member is already undeafened.
+             */
+            serverUndeafen(): Promise<void>;
+            /**
+             * Checks if this member has the specified role.
+             */
+            hasRole(role: IRole | string): Promise<void>;
+            /**
+             * Assigns (adds) the specified role to this member.
+             */
+            assignRole(role: IRole | string): Promise<void>;
+            /**
+             * Unassigns (removes) the specified role from this member.
+             */
+            unassignRole(role: IRole | string): Promise<void>;
+            /**
+             * Sets specified roles for this member: overwrites all existing roles with a new set of roles.
+             */
+            setRoles(roles: (IRole | string)[]): Promise<void>;
+            /**
+             * Moves this member to the specified voice channel.
+             */
+            setChannel(channel: IChannel | string): Promise<void>;
+            /**
+             * Makes a request to set a nickname for this member.
+             * Requires permission MANAGE_NICKNAMES.
+             */
+            setNickname(nick: string): Promise<void>;
+            /**
+             * Checks whether the user is mentioned in a message.
+             */
+            isMentioned(message: IMessage, ignoreImplicitMentions: boolean): boolean;
+            /**
+             * Opens or gets existing Direct Message channel.
+             */
+            openDM(): Promise<IDirectMessageChannel>;
+            /**
+             * Attempts to get a guild member interface, returns null if this user is not a member of the guild or guild is not in cache.
+             */
+            memberOf(guild: IGuild): IGuildMember;
+            /**
+             * Resolves permissions for user in context.
+             * Returns a helper object with getter boolean properties.
+             */
+            permissionsFor(context: IChannel | IGuild): IPermissions;
+            /**
+             * Resolves permissions for user in context and checks if user has permission.
+             * See IUser.permissionsFor method for list of throwable errors.
+             * See documentation of IPermissions for full list of possible permissions.
+             */
+            can(permission: number, context: IChannel | IGuild): boolean;
+        }
+
+        interface IInviteManager {
+            /**
+             * Makes a request to create an invite. See IChannel.createInvite for more info.
+             */
+            create(channel: IChannel | string, options: InviteOptions): Promise<Object>;
+            /**
+             * Makes a request to regenerate existing invite.
+             */
+            regenerate(code: Object | string): Promise<Object>;
+            /**
+             * Makes a request to revoke existing invite.
+             */
+            revoke(code: Object | string): Promise<Object>;
+            /**
+             * Makes a request to resolve existing invite.
+             */
+            resolve(code: Object | string): Promise<Object>;
+            /**
+             * * Deprecated: Only works with user accounts. Bot accounts can be invited by users with Manage Server permission using the https://discordapp.com/oauth2/authorize?client_id=%APP_ID%&scope=bot page. See official Discord API documentation for more info.
+             * Makes a request to accept existing invite.
+             */
+            accept(code: Object | string): Promise<Object>;
+        }
+
+        interface IMessage {
+            id: String;
+            type: Number;
+            channel_id: String;
+            author: IUser;
+            content: String;
+            attachments: any[];
+            embeds: any[];
+            mentions: IUser[];
+            mention_roles: IRole[];
+            mention_everyone: boolean;
+            tts: boolean;
+            timestamp: String;
+            edited_timestamp: String;
+            nonce: String;
+            webhook_id: String;
+            pinned: boolean;
+            deleted: boolean;
+            isCached: boolean;
+            isEdited: boolean;
+            isPrivate: boolean;
+            isSystem: boolean;
+            systemMessage: String;
+            displayUsername: String;
+            channel: ITextChannel | IDirectMessageChannel;
+            guild: IGuild;
+            member: IGuildMember;
+            /**
+             * Creates an array of all known (cached) versions of this message (including the latest). Sorted from latest (first) to oldest (last). Does not include embeds.
+             */
+            edits: Object[];
+            createdAt: Date;
+            call: Object;
+            /**
+             * Resolves user and channel references in content property to proper names. References that are not found in cache will be left as is and not resolved.
+             * * Returns null if this message is not cached.
+             */
+            resolveContent(): string;
+            /**
+             * Makes a request to edit this message.
+             * Editing of other users' messages is not allowed, server will send an Error Forbidden and returned promise will be rejected if you attempt to do so.
+             * See IMessageCollection.editMessage if you are looking for a method that can operate on JSON or raw message id.
+             */
+            edit(content): Promise<IMessage>;
+            /**
+             * Makes a request to delete this message.
+             * See IMessageCollection.deleteMessage if you are looking for a method that can operate on JSON or raw message id.
+             */
+            delete(): Promise<void>;
+            /**
+             * Makes a request to pin this message.
+             * See IMessageCollection.pinMessage if you are looking for a method that can operate on JSON or raw message id.
+             */
+            pin(): Promise<IMessage>;
+            /**
+             * Makes a request to unpin this message.
+             * See IMessageCollection.unpinMessage if you are looking for a method that can operate on JSON or raw message id.
+             */
+            unpin(): Promise<IMessage>;
+            /**
+             * Makes a request to send a reply to channel the message was from, prefixing content with author's mention in non-private channels.
+             */
+            reply(content, mentions?, tts?): Promise<IMessage>;
+        }
+
+        interface IMessageCollection {
+            length: Number;
+            size: Number;
+            forChannel(channel): IMessage[];
+            purgeChannelCache(channel);
+            forChannelPinned(channel): IMessage[];
+            purgeChannelPinned(channel);
+            purgePinned();
+            purgeEdits();
+            purgeAllCache();
+            getChannelMessageLimit(channel): Number;
+            setChannelMessageLimit(channel, limit): Boolean;
+            getMessageLimit(): Number;
+            setMessageLimit(limit);
+            getEditsLimit(): Number;
+            setEditsLimit(limit);
+            editMessage(content, messageId, channelId): Promise<Object>;
+            deleteMessage(messageId, channelId): Promise<void>;
+            pinMessage(messageId, channelId): Promise<void>;
+            unpinMessage(messageId, channelId): Promise<void>;
+            deleteMessages(messages, channel?): Promise<void>;
+            resolveContent(content, guild?): String;
+            getBy(key, value): any;
+            get(id): any;
+            filter(fn): any[];
+            find(fn): Object;
+            forEach(fn);
+            map(fn): any[];
+            toArray(): any[];
+        }
+
+        interface IPermissionOverwrite {
+            id: String;
+            type: String;
+            allow: IPermissions;
+            deny: IPermissions;
+            reload();
+            commit(): Promise<IPermissionOverwrite>;
+            delete(): Promise<void>;
+        }
+
+        interface IPermissions {
+
+        }
+
+        interface IRole {
+            id: String;
+            name: String;
+            permissions: IPermissions;
+            mentionable: boolean;
+            position: Number;
+            hoist: boolean;
+            color: Number;
+            managed: boolean;
+            mention: String;
+            createdAt: Date;
+            reload();
+            commit(name?, color?, hoist?, mentionable?): Promise<void>;
+            setPosition(position): Promise<void>;
+            delete(): Promise<void>;
+        }
+
+        interface ITextChannel {
+            id: String;
+            name: String;
+            topic: String;
+            position: Number;
+            type: Number;
+            guild_id: String;
+            recipients: Set<IUser>;
+            permission_overwrites: IPermissionOverwrite[];
+            bitrate: Number;
+            user_limit: Number;
+            owner_id: String;
+            icon: String;
+            mention: String;
+            members: IGuildMember[];
+            isDefaultChannel: boolean;
+            allMessagesLoaded: boolean;
+            messages: IMessage[];
+            pinnedMessages: IMessage[];
+            is_private: boolean;
+            isPrivate: boolean;
+            guild: IGuild;
+            createdAt: Date;
+            fetchMessages(limit?, before?, after?): Promise<Object>;
+            fetchPinned(): Promise<Object>;
+            sendMessage(content, mentions?, tts?): Promise<IMessage>;
+            sendTyping(): Promise<void>;
+            uploadFile(readableStream, filename, content?, tts?): Promise<IMessage>;
+            createInvite(options): Promise<Object>;
+            createPermissionOverwrite(roleOrMember, allow?, deny?): Promise<IPermissionOverwrite>;
+            update(name?, topic?, bitrate?, userLimit?): Promise<IChannel>;
+            clone(name, type?, bitrate?, userLimit?);
+            setPosition(position): Promise<void>;
+            delete(): Promise<void>;
+            getInvites(): Promise<Object[]>;
+        }
+
+        interface IUser {
+            id: String;
+            username: String;
+            discriminator: String;
+            avatar: String;
+            bot: boolean;
+            registeredAt: Date;
+            avatarURL: String;
+            status: String;
+            game: Object;
+            gameName: String;
+            previousStatus: String;
+            previousGame: Object;
+            previousGameName: String;
+            mention: String;
+            nickMention: String;
+            isWebhook: boolean;
+            createdAt: Date;
+            isMentioned(message, ignoreImplicitMentions): boolean;
+            openDM(): Promise<IDirectMessageChannel>;
+            memberOf(guild): IGuildMember;
+            permissionsFor(context): IPermissions;
+            can(permission, context): boolean;
+            getVoiceChannel(guild): IVoiceChannel;
+        }
+
+        interface IUserCollection {
+            length: Number;
+            size: Number;
+            fetchMembers(guilds?): Promise<void>;
+            getMember(guild, user): IGuildMember;
+            membersForGuild(guild): IGuildMember[];
+            membersForChannel(channel): IGuildMember[];
+            membersInVoiceChannel(channel): IGuildMember[];
+            usersInCall(channel): IUser[];
+            onlineMembersForGuild(guild): IGuildMember[];
+            onlineMembersForChannel(channel): IGuildMember[];
+            offlineMembersForGuild(guild): IGuildMember[];
+            offlineMembersForChannel(channel): IGuildMember[];
+            getBy(key, value): any;
+            get(id): any;
+            filter(fn): any[];
+            find(fn): Object;
+            forEach(fn);
+            map(fn): any[];
+            toArray(): any[];
+        }
+
+        interface IVoiceChannel {
+            id: String;
+            name: String;
+            topic: String;
+            position: Number;
+            type: Number;
+            guild_id: String;
+            recipients: Set<IUser>;
+            permission_overwrites: IPermissionOverwrite[];
+            bitrate: Number;
+            user_limit: Number;
+            owner_id: String;
+            icon: String;
+            members: IGuildMember[];
+            joined: boolean;
+            is_private: boolean;
+            isPrivate: boolean;
+            guild: IGuild;
+            createdAt: Date;
+            join(selfMute?, selfDeaf?): Promise<VoiceConnectionInfo>;
+            leave();
+            getVoiceConnectionInfo(): VoiceConnectionInfo;
+            createInvite(options): Promise<Object>;
+            createPermissionOverwrite(roleOrMember, allow?, deny?): Promise<IPermissionOverwrite>;
+            update(name?, topic?, bitrate?, userLimit?): Promise<IChannel>;
+            clone(name, type?, bitrate?, userLimit?);
+            setPosition(position): Promise<void>;
+            delete(): Promise<void>;
+            getInvites(): Promise<Object[]>;
+        }
+
+        interface IVoiceConnection {
+            disposed: boolean;
+            canStream: boolean;
+            channel: IChannel;
+            channelId: String;
+            guild: IGuild;
+            guildId: String;
+            ssrcToUser(ssrc): IUser;
+            ssrcToMember(ssrc): IGuildMember;
+            getEncoderStream(options?): AudioEncoderStream;
+            createExternalEncoder(options?): FFmpegEncoder | OggOpusPlayer | WebmOpusPlayer;
+            getEncoder(options?): AudioEncoder;
+            getDecoder(options?): any;
+            disconnect();
+        }
+
+        interface IWebhookManager {
+            fetchForGuild(guild): Promise<Object[]>;
+            fetchForChannel(channel): Promise<Object[]>;
+            create(channel, options): Promise<Object>;
+            fetch(webhook, token): Promise<Object>;
+            edit(webhook, token, options): Promise<Object>;
+            delete(webhook, token): Promise<void>;
+            execute(webhook, token, options, wait?): Promise<void>;
+            executeSlack(webhook, token, options, wait?): Promise<void>;
+        }
     }
-
-    interface ICall {
-        isMentioned(message, ignoreImplicitMentions): boolean;
-        getApplication(): Promise<Object>;
-        edit(currentPassword, username?, avatar?, email?, newPassword?): Promise<IUser>;
-        setAvatar(avatar, currentPassword?): Promise<IUser>;
-        setUsername(username, currentPassword?): Promise<IUser>;
-        setStatus(status, game?);
-        setGame(game);
-        memberOf(guild): IGuildMember;
-        permissionsFor(context): IPermissions;
-        can(permission, context): boolean;
-        getVoiceChannel(guild): IVoiceChannel;
-    }
-
-    interface IChannel {
-        id: String;
-        name: String;
-        topic: String;
-        position: Number;
-        type: Number;
-        guild_id: String;
-        recipients: Set<IUser>;
-        permission_overwrites: IPermissionOverwrite[];
-        bitrate: Number;
-        user_limit: Number;
-        owner_id: String;
-        icon: String;
-        is_private: boolean;
-        isPrivate: boolean;
-        guild: IGuild;
-        createdAt: Date;
-
-        createInvite(options): Promise<Object>;
-        createPermissionOverwrite(roleOrMember, allow?, deny?): Promise<IPermissionOverwrite>;
-        update(name?, topic?, bitrate?, userLimit?): Promise<IChannel>;
-        clone(name, type?, bitrate?, userLimit?);
-        setPosition(position): Promise<void>;
-        delete(): Promise<void>;
-        getInvites(): Promise<Object[]>;
-    }
-
-    interface IChannelCollection { 
-        length: Number;
-        size: Number;
-        forGuild(guild): IChannel[];
-        textForGuild(guild): ITextChannel[];
-        voiceForGuild(guild): IVoiceChannel[];
-        getBy(key, value): any;
-        get(id): any;
-        filter(fn): any[];
-        find(fn): Object;
-        forEach(fn);
-        map(fn): any[];
-        toArray(): any[];
-    }
-
-    interface IDirectMessageChannel {
-        id: String;
-        name: String;
-        topic: String;
-        position: Number;
-        type: Number;
-        guild_id: String;
-        recipients: IUser[];
-        permission_overwrites: any[];
-        bitrate: Number;
-        user_limit: Number;
-        owner_id: String;
-        icon: String;
-        is_private: boolean;
-        isPrivate: boolean;
-        owner: IAuthenticatedUser | IUser;
-        iconURL: String;
-        recipient: IUser;
-        allMessagesLoaded: boolean;
-        messages: IMessage[];
-        pinnedMessages: IMessage[];
-        joinedCall: boolean;
-        usersInCall: IUser[];
-        call: ICall;
-        createdAt: Date;
-        isOwner(user): boolean;
-        fetchMessages(limit?, before?, after?): Promise<Object>;
-        fetchPinned(): Promise<Object>;
-        sendMessage(content, mentions?, tts?): Promise<IMessage>;
-        uploadFile(readableStream, filename, content?, tts?): Promise<IMessage>;
-        sendTyping(): Promise<void>;
-        close(): Promise<void>;
-        ring(recipients?): Promise<void>;
-        stopRinging(recipients?): Promise<void>;
-        changeCallRegion(region): Promise<void>;
-        addRecipient(user): Promise<void>;
-        removeRecipient(user): Promise<void>;
-        setName(name): Promise<IDirectMessageChannel>;
-        setIcon(icon): Promise<IDirectMessageChannel>;
-        joinCall(selfMute?, selfDeaf?): Promise<VoiceConnectionInfo>;
-        leaveCall();
-        getVoiceConnectionInfo(): VoiceConnectionInfo;
-        fetchCall(): Promise<(ICall|null)>;
-    }
-
-    interface IDirectMessageChannelCollection { 
-        length: Number;
-        size: Number;
-        getOrOpen(recipient): Promise<IDirectMessageChannel>;
-        open(recipient): Promise<IDirectMessageChannel>;
-        createGroupDM(recipients?): Promise<IDirectMessageChannel>;
-        getBy(key, value): any;
-        get(id): any;
-        filter(fn): any[];
-        find(fn): Object;
-        forEach(fn);
-        map(fn): any[];
-        toArray(): any[];
-    }
-
-    interface IGuild { 
-        id: String;
-        name: String;
-        owner_id: String;
-        icon: String;
-        splash: String;
-        features: Set<any>;
-        emojis: Object[];
-        default_message_notifications: Number;
-        roles: IRole[];
-        afk_channel_id: String;
-        afk_timeout: Number;
-        verification_level: Number;
-        region: String;
-        member_count: Number;
-        large: Boolean;
-        mfa_level: Number;
-        joined_at: String;
-        acronym: String;
-        iconURL: String;
-        splashURL: String;
-        afk_channel: IChannel;
-        owner: IAuthenticatedUser | IUser;
-        channels: IChannel[];
-        textChannels: ITextChannel[];
-        voiceChannels: IVoiceChannel[];
-        generalChannel: ITextChannel;
-        members: IGuildMember[];
-        createdAt: Date;
-        isOwner(user): boolean;
-        edit(name?, icon?, region?, afkChannelId?, afkTimeout?, verificationLevel?, defaultMessageNotifications?): Promise<IGuild>;
-        createChannel(type, name, permissionOverwrites?, bitrate?, userLimit?): Promise<(ITextChannel|IVoiceChannel)>;
-        createRole(): Promise<IRole>;
-        createInvite(options): Promise<Object>;
-        delete(): Promise<void>;
-        leave(): Promise<void>;
-        ban(user, deleteMessageForDays): Promise<void>;
-        unban(user): Promise<void>;
-        getBans(): Promise<IUser[]>;
-        getPruneEstimate(days): Promise<Object>;
-        pruneMembers(days): Promise<Object>;
-        getInvites(): Promise<Object[]>;
-        fetchRegions(): Promise<Object[]>;
-        transferOwnership(user): Promise<IGuild>;
-        getWidget(): Promise<Object>;
-        editWidget(options): Promise<Object>;
-        fetchEmoji(): Promise<Object[]>;
-        uploadEmoji(image, name): Promise<Object>;
-        deleteEmoji(emoji): Promise<Object>;
-        editEmoji(emoji, options): Promise<Object>;
-        getEmojiURL(): String;
-    }
-
-    interface IGuildCollection { 
-        length: Number;
-        size: Number;
-        create(name, region, icon?, roles?, channels?, verificationLevel?, defaultMessageNotifications?): Promise<IGuild>;
-        fetchRegions(): Promise<Object[]>;
-        getBy(key, value): any;
-        get(id): any;
-        filter(fn): any[];
-        find(fn): Object;
-        forEach(fn);
-        map(fn): any[];
-        toArray(): any[];
-    }
-
-    interface IGuildMember { 
-        id: String;
-        guild_id: String;
-        nick: String;
-        roles: IRole[];
-        mute: boolean;
-        deaf: boolean;
-        self_mute: boolean;
-        self_deaf: boolean;
-        joined_at: String;
-        username: String;
-        discriminator: String;
-        avatar: String;
-        bot: boolean;
-        status: String;
-        game: Object;
-        gameName: String;
-        previousStatus: String;
-        previousGame: Object;
-        previousGameName: String;
-        guild: IGuild;
-        name: String;
-        registeredAt: Date;
-        avatarURL: String;
-        mention: String;
-        nickMention: String;
-        isWebhook: boolean;
-        createdAt: Date;
-        getVoiceChannel(): IVoiceChannel;
-        kick(): Promise<void>;
-        ban(deleteMessageForDays): Promise<void>;
-        unban(): Promise<void>;
-        serverMute(): Promise<void>;
-        serverUnmute(): Promise<void>;
-        serverDeafen(): Promise<void>;
-        serverUndeafen(): Promise<void>;
-        hasRole(role): Promise<void>;
-        assignRole(role): Promise<void>;
-        unassignRole(role): Promise<void>;
-        setRoles(roles): Promise<void>;
-        setChannel(channel): Promise<void>;
-        setNickname(nick): Promise<void>;
-        isMentioned(message, ignoreImplicitMentions): boolean;
-        openDM(): Promise<IDirectMessageChannel>;
-        memberOf(guild): IGuildMember;
-        permissionsFor(context): IPermissions;
-        can(permission, context): boolean;
-    }
-
-    interface IInviteManager { 
-        create(channel, options): Promise<Object>;
-        regenerate(code): Promise<Object>;
-        revoke(code): Promise<Object>;
-        resolve(code): Promise<Object>;
-        accept(code): Promise<Object>;
-    }
-
-    interface IMessage { 
-        id: String;
-        type: Number;
-        channel_id: String;
-        author: IUser;
-        content: String;
-        attachments: any[];
-        embeds: any[];
-        mentions: IUser[];
-        mention_roles: IRole[];
-        mention_everyone: boolean;
-        tts: boolean;
-        timestamp: String;
-        edited_timestamp: String;
-        nonce: String;
-        webhook_id: String;
-        pinned: boolean;
-        deleted: boolean;
-        isCached: boolean;
-        isEdited: boolean;
-        isPrivate: boolean;
-        isSystem: boolean;
-        systemMessage: String;
-        displayUsername: String;
-        channel: ITextChannel | IDirectMessageChannel;
-        guild: IGuild;
-        member: IGuildMember;
-        edits: Object[];
-        createdAt: Date;
-        call: Object;
-        resolveContent(): String;
-        edit(content): Promise<IMessage>;
-        delete(): Promise<void>;
-        pin(): Promise<IMessage>;
-        unpin(): Promise<IMessage>;
-        reply(content, mentions?, tts?): Promise<IMessage>;
-    }
-
-    interface IMessageCollection { 
-        length: Number;
-        size: Number;
-        forChannel(channel): IMessage[];
-        purgeChannelCache(channel);
-        forChannelPinned(channel): IMessage[];
-        purgeChannelPinned(channel);
-        purgePinned();
-        purgeEdits();
-        purgeAllCache();
-        getChannelMessageLimit(channel): Number;
-        setChannelMessageLimit(channel, limit): Boolean;
-        getMessageLimit(): Number;
-        setMessageLimit(limit);
-        getEditsLimit(): Number;
-        setEditsLimit(limit);
-        editMessage(content, messageId, channelId): Promise<Object>;
-        deleteMessage(messageId, channelId): Promise<void>;
-        pinMessage(messageId, channelId): Promise<void>;
-        unpinMessage(messageId, channelId): Promise<void>;
-        deleteMessages(messages, channel?): Promise<void>;
-        resolveContent(content, guild?): String;
-        getBy(key, value): any;
-        get(id): any;
-        filter(fn): any[];
-        find(fn): Object;
-        forEach(fn);
-        map(fn): any[];
-        toArray(): any[];
-    }
-
-    interface IPermissionOverwrite { 
-        id: String;
-        type: String;
-        allow: IPermissions;
-        deny: IPermissions;
-        reload();
-        commit(): Promise<IPermissionOverwrite>;
-        delete(): Promise<void>;
-    }
-
-    interface IPermissions { 
-
-    }
-
-    interface IRole { 
-        id: String;
-        name: String;
-        permissions: IPermissions;
-        mentionable: boolean;
-        position: Number;
-        hoist: boolean;
-        color: Number;
-        managed: boolean;
-        mention: String;
-        createdAt: Date;
-        reload();
-        commit(name?, color?, hoist?, mentionable?): Promise<void>;
-        setPosition(position): Promise<void>;
-        delete(): Promise<void>;
-    }
-
-    interface ITextChannel { 
-        id: String;
-        name: String;
-        topic: String;
-        position: Number;
-        type: Number;
-        guild_id: String;
-        recipients: Set<IUser>;
-        permission_overwrites: IPermissionOverwrite[];
-        bitrate: Number;
-        user_limit: Number;
-        owner_id: String;
-        icon: String;
-        mention: String;
-        members: IGuildMember[];
-        isDefaultChannel: boolean;
-        allMessagesLoaded: boolean;
-        messages: IMessage[];
-        pinnedMessages: IMessage[];
-        is_private: boolean;
-        isPrivate: boolean;
-        guild: IGuild;
-        createdAt: Date;
-        fetchMessages(limit?, before?, after?): Promise<Object>;
-        fetchPinned(): Promise<Object>;
-        sendMessage(content, mentions?, tts?): Promise<IMessage>;
-        sendTyping(): Promise<void>;
-        uploadFile(readableStream, filename, content?, tts?): Promise<IMessage>;
-        createInvite(options): Promise<Object>;
-        createPermissionOverwrite(roleOrMember, allow?, deny?): Promise<IPermissionOverwrite>;
-        update(name?, topic?, bitrate?, userLimit?): Promise<IChannel>;
-        clone(name, type?, bitrate?, userLimit?);
-        setPosition(position): Promise<void>;
-        delete(): Promise<void>;
-        getInvites(): Promise<Object[]>;
-    }
-
-    interface IUser { 
-        id: String;
-        username: String;
-        discriminator: String;
-        avatar: String;
-        bot: boolean;
-        registeredAt: Date;
-        avatarURL: String;
-        status: String;
-        game: Object;
-        gameName: String;
-        previousStatus: String;
-        previousGame: Object;
-        previousGameName: String;
-        mention: String;
-        nickMention: String;
-        isWebhook: boolean;
-        createdAt: Date;
-        isMentioned(message, ignoreImplicitMentions): boolean;
-        openDM(): Promise<IDirectMessageChannel>;
-        memberOf(guild): IGuildMember;
-        permissionsFor(context): IPermissions;
-        can(permission, context): boolean;
-        getVoiceChannel(guild): IVoiceChannel;
-    }
-
-    interface IUserCollection { 
-        length: Number;
-        size: Number;
-        fetchMembers(guilds?): Promise<void>;
-        getMember(guild, user): IGuildMember;
-        membersForGuild(guild): IGuildMember[];
-        membersForChannel(channel): IGuildMember[];
-        membersInVoiceChannel(channel): IGuildMember[];
-        usersInCall(channel): IUser[];
-        onlineMembersForGuild(guild): IGuildMember[];
-        onlineMembersForChannel(channel): IGuildMember[];
-        offlineMembersForGuild(guild): IGuildMember[];
-        offlineMembersForChannel(channel): IGuildMember[];
-        getBy(key, value): any;
-        get(id): any;
-        filter(fn): any[];
-        find(fn): Object;
-        forEach(fn);
-        map(fn): any[];
-        toArray(): any[];
-    }
-
-    interface IVoiceChannel { 
-        id: String;
-        name: String;
-        topic: String;
-        position: Number;
-        type: Number;
-        guild_id: String;
-        recipients: Set<IUser>;
-        permission_overwrites: IPermissionOverwrite[];
-        bitrate: Number;
-        user_limit: Number;
-        owner_id: String;
-        icon: String;
-        members: IGuildMember[];
-        joined: boolean;
-        is_private: boolean;
-        isPrivate: boolean;
-        guild: IGuild;
-        createdAt: Date;
-        join(selfMute?, selfDeaf?): Promise<VoiceConnectionInfo>;
-        leave();
-        getVoiceConnectionInfo(): VoiceConnectionInfo;
-        createInvite(options): Promise<Object>;
-        createPermissionOverwrite(roleOrMember, allow?, deny?): Promise<IPermissionOverwrite>;
-        update(name?, topic?, bitrate?, userLimit?): Promise<IChannel>;
-        clone(name, type?, bitrate?, userLimit?);
-        setPosition(position): Promise<void>;
-        delete(): Promise<void>;
-        getInvites(): Promise<Object[]>;
-    }
-
-    interface IVoiceConnection { 
-        disposed: boolean;
-        canStream: boolean;
-        channel: IChannel;
-        channelId: String;
-        guild: IGuild;
-        guildId: String;
-        ssrcToUser(ssrc): IUser;
-        ssrcToMember(ssrc): IGuildMember;
-        getEncoderStream(options?): AudioEncoderStream;
-        createExternalEncoder(options?): FFmpegEncoder | OggOpusPlayer | WebmOpusPlayer;
-        getEncoder(options?): AudioEncoder;
-        getDecoder(options?): any;
-        disconnect();
-    }
-
-    interface IWebhookManager { 
-        fetchForGuild(guild): Promise<Object[]>;
-        fetchForChannel(channel): Promise<Object[]>;
-        create(channel, options): Promise<Object>;
-        fetch(webhook, token): Promise<Object>;
-        edit(webhook, token, options): Promise<Object>;
-        delete(webhook, token): Promise<void>;
-        execute(webhook, token, options, wait?): Promise<void>;
-        executeSlack(webhook, token, options, wait?): Promise<void>;
-    }
-
-    namespace Discordie {}
     export = Discordie;
 }
