@@ -1597,21 +1597,61 @@ declare module "discordie" {
             webhook_id: String;
             pinned: boolean;
             deleted: boolean;
+
+            /**
+             * Checks whether this message is cached.
+             */
             isCached: boolean;
+            /**
+             * Checks whether this message was edited by the author.
+             * Returns null if message does not exist in cache.
+             */
             isEdited: boolean;
+            /**
+             * Checks whether this message is from a private channel (direct message).
+             * Returns null if message/channel does not exist in cache.
+             */
             isPrivate: boolean;
+            /**
+             * Checks whether the message is a system message.
+             */
             isSystem: boolean;
+            /**
+             * Generates a system message string depending on message type.
+             */
             systemMessage: String;
+            /**
+             * Resolves username that should be displayed with this message.
+             */
             displayUsername: String;
+            /**
+             * Gets channel of this message.
+             * Returns null if message does not exist in cache.
+             */
             channel: ITextChannel | IDirectMessageChannel;
+            /**
+             * Gets guild of this message.
+             * Returns null if message does not exist in cache or from a private channel (direct message).
+             */
             guild: IGuild;
+            /**
+             * Gets member instance of author.
+             * Returns null for private channels, if message does not exist in cache, the author is no longer a member of the guild, or it is a webhook message.
+             */
             member: IGuildMember;
             /**
              * Creates an array of all known (cached) versions of this message (including the latest). Sorted from latest (first) to oldest (last). Does not include embeds.
              */
-            edits: Object[];
+            edits: IMessage[];
+            /**
+             * Gets date and time this object was created at.
+             */
             createdAt: Date;
-            call: Object;
+            /**
+             * Raw MessageCall object:
+             */
+            call: { participants: string[]; ended_timestamp: string };
+
             /**
              * Resolves user and channel references in content property to proper names. References that are not found in cache will be left as is and not resolved.
              * * Returns null if this message is not cached.
@@ -1622,7 +1662,7 @@ declare module "discordie" {
              * Editing of other users' messages is not allowed, server will send an Error Forbidden and returned promise will be rejected if you attempt to do so.
              * See IMessageCollection.editMessage if you are looking for a method that can operate on JSON or raw message id.
              */
-            edit(content): Promise<IMessage>;
+            edit(content: string): Promise<IMessage>;
             /**
              * Makes a request to delete this message.
              * See IMessageCollection.deleteMessage if you are looking for a method that can operate on JSON or raw message id.
@@ -1641,38 +1681,135 @@ declare module "discordie" {
             /**
              * Makes a request to send a reply to channel the message was from, prefixing content with author's mention in non-private channels.
              */
-            reply(content, mentions?, tts?): Promise<IMessage>;
+            reply(content: string | string[], mentions?: IUser | IGuildMember | IUser[] | IGuildMember[], tts?: boolean): Promise<IMessage>;
         }
 
         interface IMessageCollection {
+            /**
+             * Number of elements in this collection.
+             */
             length: Number;
+            /**
+             * Number of elements in this collection. Alias for .length.
+             */
             size: Number;
-            forChannel(channel): IMessage[];
-            purgeChannelCache(channel);
-            forChannelPinned(channel): IMessage[];
-            purgeChannelPinned(channel);
+
+            /**
+             * Creates an array of cached messages in channel, sorted in order of arrival (message cache is sorted on message insertion, not when this getter is invoked).
+             * Returns an empty array if channel no longer exists.
+             * * Note: Message cache also includes deleted messages. You can filter them by checking IMessage.deleted boolean.
+             */
+            forChannel(channel: IChannel | string): IMessage[];
+            /**
+             * Purges channel cache.
+             */
+            purgeChannelCache(channel: IChannel | string);
+            /**
+             * Creates an array of cached pinned messages in channel.
+             * Pinned message cache is updated only if all pinned messages have been loaded with ITextChannel.fetchPinned().
+             * Returns an empty array if channel no longer exists or if pinned messages have not been fetched yet.
+             */
+            forChannelPinned(channel: IChannel | string): IMessage[];
+            /**
+             * Purges pinned message cache for channel.
+             */
+            purgeChannelPinned(channel: IChannel | string);
+            /**
+             * Purges pinned message cache globally.
+             */
             purgePinned();
+            /**
+             * Purges edits cache globall
+             */
             purgeEdits();
+            /**
+             * Purges message cache globally.
+             */
             purgeAllCache();
-            getChannelMessageLimit(channel): Number;
-            setChannelMessageLimit(channel, limit): Boolean;
+            /**
+             * Gets channel message cache limit.
+             */
+            getChannelMessageLimit(channel: IChannel | string): Number;
+            /**
+             * Sets channel message cache limit (with a minimum of 1). Limit reverts to default when channel (or cache) is destroyed. Returns false if limit is invalid or channel does not exist.
+             */
+            setChannelMessageLimit(channel: IChannel | string, limit: number): Boolean;
+            /**
+             * Gets global message cache limit per channel.
+             */
             getMessageLimit(): Number;
-            setMessageLimit(limit);
+            /**
+             * Sets global message cache limit per channel (with a minimum of 1). Does not affect channels with custom limits if new is lower than current.
+             */
+            setMessageLimit(limit: number);
+            /**
+             * Gets global edits cache limit per message.
+             */
             getEditsLimit(): Number;
-            setEditsLimit(limit);
-            editMessage(content, messageId, channelId): Promise<Object>;
-            deleteMessage(messageId, channelId): Promise<void>;
-            pinMessage(messageId, channelId): Promise<void>;
-            unpinMessage(messageId, channelId): Promise<void>;
-            deleteMessages(messages, channel?): Promise<void>;
-            resolveContent(content, guild?): String;
+            /**
+             * Sets global edits cache limit per message.
+             */
+            setEditsLimit(limit: number);
+            /**
+             * Makes a request to edit a message. Alternative method for editing messages that are not in cache.
+             * Editing of other users' messages is not allowed, server will send an Error Forbidden and returned promise will be rejected if you attempt to do so.
+             * Parameter messageId can be an object with fields {channel_id, id}, where id is a String message id, channel_id is a String channel id.
+             * Parameter channelId is ignored when messageId is an object or an instance of IMessage.
+             * Returns a promise that resolves to a JSON object of the edited message.
+             */
+            editMessage(content: string, messageId: IMessage | Object | string, channelId: string): Promise<Object>;
+            /**
+             * Makes a request to delete a message. Alternative method for deleting messages that are not in cache.
+             * Parameter messageId can be an object with fields {channel_id, id}, where id is a String message id, channel_id is a String channel id.
+             * Parameter channelId is ignored when messageId is an object or an instance of IMessage.
+             */
+            deleteMessage(messageId: IMessage | Object | string, channelId: string): Promise<void>;
+            /**
+             * Makes a request to pin a message. Alternative method for pinning messages that are not in cache.
+             */
+            pinMessage(messageId: IMessage | Object | string, channelId: string): Promise<void>;
+            /**
+             * Makes a request to unpin a message. Alternative method for unpinning messages that are not in cache.
+             */
+            unpinMessage(messageId: IMessage | Object | string, channelId: string): Promise<void>;
+            /**
+             * Makes a request to delete multiple messages.
+             * If messages array contains instances of IMessage, parameter channel is not required as it will be determined from the first message instance. Also deleted messages will be omitted from the request.
+             * If messages array is empty, returned promise resolves instantly without sending a request.
+             */
+            deleteMessages(messages: (IMessage | string)[], channel?: IChannel | string): Promise<void>;
+            /**
+             * Resolves user and channel references to proper names. References that are not found in cache will be left as is and not resolved.
+             */
+            resolveContent(content: string, guild?: IGuild | string): String;
+            /**
+             * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
+             */
             getBy(key, value): any;
-            get(id): any;
-            filter(fn): any[];
-            find(fn): Object;
-            forEach(fn);
-            map(fn): any[];
-            toArray(): any[];
+            /**
+             * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
+             */
+            get(id: string): IMessage;
+            /**
+             * Creates a new array with all elements that pass the test implemented by the provided function.
+             */
+            filter(fn: (m: IMessage) => boolean): IMessage[];
+            /**
+             * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
+             */
+            find(fn: (m: IMessage) => boolean): IMessage;
+            /**
+             * Executes a provided function once per element.
+             */
+            forEach(fn: (m: IMessage) => void);
+            /**
+             * Creates a new array with the results of calling a provided function on every element in this collection.
+             */
+            map(fn: (m: IMessage) => any): any[];
+            /**
+             * Creates a new array with elements of this collection.
+             */
+            toArray(): IMessage[];
         }
 
         interface IPermissionOverwrite {
@@ -1680,13 +1817,56 @@ declare module "discordie" {
             type: String;
             allow: IPermissions;
             deny: IPermissions;
+
+            /**
+             * Loads original permissions from cache and updates this object.
+             */
             reload();
+            /**
+             * Makes a request to commit changes made to this permission overwrite object.
+             */
             commit(): Promise<IPermissionOverwrite>;
+            /**
+             * Makes a request to delete this permission overwrite.
+             */
             delete(): Promise<void>;
         }
 
         interface IPermissions {
+            General: {
+                CREATE_INSTANT_INVITE: boolean;
+                KICK_MEMBERS: boolean;
+                BAN_MEMBERS: boolean;
+                ADMINISTRATOR: boolean;
+                MANAGE_CHANNELS: boolean;
+                MANAGE_GUILD: boolean;
+                CHANGE_NICKNAME: boolean;
+                MANAGE_NICKNAMES: boolean;
+                MANAGE_ROLES: boolean;
+                MANAGE_WEBHOOKS: boolean;
+                MANAGE_EMOJIS: boolean;
+            };
 
+            Text: {
+                READ_MESSAGES: boolean;
+                SEND_MESSAGES: boolean;
+                SEND_TTS_MESSAGES: boolean;
+                MANAGE_MESSAGES: boolean;
+                EMBED_LINKS: boolean;
+                ATTACH_FILES: boolean;
+                READ_MESSAGE_HISTORY: boolean;
+                MENTION_EVERYONE: boolean;
+                EXTERNAL_EMOTES: boolean;
+            };
+
+            Voice: {
+                CONNECT: boolean;
+                SPEAK: boolean;
+                MUTE_MEMBERS: boolean;
+                DEAFEN_MEMBERS: boolean;
+                MOVE_MEMBERS: boolean;
+                USE_VAD: boolean;
+            };
         }
 
         interface IRole {
@@ -1698,11 +1878,31 @@ declare module "discordie" {
             hoist: boolean;
             color: Number;
             managed: boolean;
+
+            /**
+             * Creates a mention from this role's id.
+             */
             mention: String;
+            /**
+             * Gets date and time this object was created at.
+             */
             createdAt: Date;
+
+            /**
+             * Loads original permissions from cache and updates this object.
+             */
             reload();
-            commit(name?, color?, hoist?, mentionable?): Promise<void>;
-            setPosition(position): Promise<void>;
+            /**
+             * Makes a request to commit changes made to this role object.
+             */
+            commit(name?: string, color?: number, hoist?: boolean, mentionable?: boolean): Promise<void>;
+            /**
+             * Moves this role to position and makes a batch role update request.
+             */
+            setPosition(position: number): Promise<void>;
+            /**
+             * Makes a request to delete this role.
+             */
             delete(): Promise<void>;
         }
 
@@ -1719,6 +1919,10 @@ declare module "discordie" {
             user_limit: Number;
             owner_id: String;
             icon: String;
+
+            /**
+             * Creates a mention from this channel's id.
+             */
             mention: String;
             members: IGuildMember[];
             isDefaultChannel: boolean;
@@ -1729,6 +1933,8 @@ declare module "discordie" {
             isPrivate: boolean;
             guild: IGuild;
             createdAt: Date;
+
+
             fetchMessages(limit?, before?, after?): Promise<Object>;
             fetchPinned(): Promise<Object>;
             sendMessage(content, mentions?, tts?): Promise<IMessage>;
@@ -1849,5 +2055,6 @@ declare module "discordie" {
             executeSlack(webhook, token, options, wait?): Promise<void>;
         }
     }
+
     export = Discordie;
 }
