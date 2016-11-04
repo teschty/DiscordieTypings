@@ -1836,7 +1836,6 @@ declare module "discordie" {
             /**
              * Creates a new array with the results of calling a provided function on every element in this collection.
              */
-            map(fn: (m: IMessage) => any): any[];
             map<T>(fn: (m: IMessage) => T): T[];
             /**
              * Creates a new array with elements of this collection.
