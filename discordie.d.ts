@@ -829,6 +829,37 @@ declare module "discordie" {
             temporary?: boolean;
         }
 
+        interface IInvite {
+            max_age: number;
+            code: string;
+
+            guild: {
+                splash_hash: string | null; 
+                id: string;
+                name: string;
+            };
+
+            revoked: boolean;
+            created_at: string;
+            temporary: boolean;
+            uses: number;
+            max_uses: number;
+            
+            inviter: {
+                username: string;
+                discriminator: string;
+                bot: boolean;
+                id: string;
+                avatar: string | Buffer;
+            };
+
+            channel: {
+                type: string;
+                id: string;
+                name: string;
+            };
+        }
+
         interface IChannel {
             id: String;
             name: String;
@@ -863,7 +894,7 @@ declare module "discordie" {
             /**
              * Makes a request to create an invite for this channel.
              */
-            createInvite(options: InviteOptions): Promise<Object>;
+            createInvite(options: InviteOptions): Promise<IInvite>;
             /**
              * Makes a request to create a permission overwrite for this channel.
              */
@@ -935,7 +966,7 @@ declare module "discordie" {
             /**
              * Creates a new array with the results of calling a provided function on every element in this collection.
              */
-            map(fn): any[];
+            map<T>(fn: (c: IChannel) => T): T[]
             /**
              * Creates a new array with elements of this collection.
              */
@@ -1157,7 +1188,7 @@ declare module "discordie" {
             /**
              * Creates a new array with the results of calling a provided function on every element in this collection.
              */
-            map(fn: (d: IDirectMessageChannel) => any): any[];
+            map<T>(fn: (d: IDirectMessageChannel) => T): T[]
             /**
              * Creates a new array with elements of this collection.
              */
@@ -1261,7 +1292,7 @@ declare module "discordie" {
              * Makes a request to create an invite for general channel in this guild.
              * See IChannel.createInvite for more info.
              */
-            createInvite(options: InviteOptions): Promise<Object>;
+            createInvite(options: InviteOptions): Promise<IInvite>;
             /**
              * Makes a request to delete this guild.
              * Returns a rejected promise if the user is not owner.
@@ -1386,7 +1417,7 @@ declare module "discordie" {
             /**
              * Creates a new array with the results of calling a provided function on every element in this collection.
              */
-            map(fn: (g: IGuild) => any): any[];
+            map<T>(fn: (g: IGuild) => T): T[];
             /**
              * Creates a new array with elements of this collection.
              */
@@ -1559,7 +1590,7 @@ declare module "discordie" {
             /**
              * Makes a request to create an invite. See IChannel.createInvite for more info.
              */
-            create(channel: IChannel | string, options: InviteOptions): Promise<Object>;
+            create(channel: IChannel | string, options: InviteOptions): Promise<IInvite>;
             /**
              * Makes a request to regenerate existing invite.
              */
@@ -1806,6 +1837,7 @@ declare module "discordie" {
              * Creates a new array with the results of calling a provided function on every element in this collection.
              */
             map(fn: (m: IMessage) => any): any[];
+            map<T>(fn: (m: IMessage) => T): T[];
             /**
              * Creates a new array with elements of this collection.
              */
@@ -1924,29 +1956,98 @@ declare module "discordie" {
              * Creates a mention from this channel's id.
              */
             mention: String;
+            /**
+             * Creates an array of IGuildMember that have permissions to read this channel.
+             */
             members: IGuildMember[];
+            /**
+             * Gets a value indicating whether it is a default (general) channel.
+             */
             isDefaultChannel: boolean;
+            /**
+             * Gets a value indicating whether all messages were loaded.
+             */
             allMessagesLoaded: boolean;
+            /**
+             * Creates an array of cached messages in this channel, sorted in order of arrival (message cache is sorted on message insertion, not when this getter is invoked).
+             * Returns an empty array if channel no longer exists.
+             * * Note: Message cache also includes deleted messages. You can filter them by checking IMessage.deleted boolean.
+             */
             messages: IMessage[];
+            /**
+             * Creates an array of cached pinned messages in this channel.
+             * Pinned message cache is updated only if all pinned messages have been loaded with ITextChannel.fetchPinned().
+             * Returns an empty array if channel no longer exists or if pinned messages have not been fetched yet.
+             */
             pinnedMessages: IMessage[];
+            /**
+             * * Deprecated: Removed in API v6. Use isPrivate instead.
+             */
             is_private: boolean;
+            /**
+             * Checks whether this channel is a direct message channel or a group.
+             */
             isPrivate: boolean;
+            /**
+             * Gets guild of this channel.
+             */
             guild: IGuild;
+            /**
+             * Gets date and time this object was created at.
+             */
             createdAt: Date;
 
-
-            fetchMessages(limit?, before?, after?): Promise<Object>;
-            fetchPinned(): Promise<Object>;
-            sendMessage(content, mentions?, tts?): Promise<IMessage>;
+            /**
+             * Makes a request to fetch messages for this channel.
+             * Discord API does not allow fetching more than 100 messages at once.
+             */
+            fetchMessages(limit?: number | null, before?: IMessage | string | null, after?: IMessage | string | null): Promise<FetchMessagesResult>;
+            /**
+             * Makes a request to fetch pinned messages for this channel.
+             */
+            fetchPinned(): Promise<FetchPinnedResult>;
+            /**
+             * Makes a request to send a message to this channel. Messages over 2000 characters will be rejected by the server.
+             * Use uploadFile if you want to send a message with an attachment.
+             */
+            sendMessage(content: string | string[], mentions?: IUser | IGuildMember | IUser[] | IGuildMember[], tts?: boolean): Promise<IMessage>;
+            /**
+             * Makes a request to send typing status for this channel.
+             * Discord client displays it for 10 seconds, sends every 5 seconds. Stops showing typing status if receives a message from the user.
+             */
             sendTyping(): Promise<void>;
-            uploadFile(readableStream, filename, content?, tts?): Promise<IMessage>;
-            createInvite(options): Promise<Object>;
-            createPermissionOverwrite(roleOrMember, allow?, deny?): Promise<IPermissionOverwrite>;
-            update(name?, topic?, bitrate?, userLimit?): Promise<IChannel>;
-            clone(name, type?, bitrate?, userLimit?);
-            setPosition(position): Promise<void>;
+            /**
+             * Makes a request to upload data to this channel. Images require a filename with a valid extension to actually be uploaded.
+             */
+            uploadFile(readableStream: Buffer | NodeJS.ReadableStream | string, filename: string, content?: string, tts?: boolean): Promise<IMessage>;
+            /**
+             * Makes a request to create an invite for this channel.
+             */
+            createInvite(options: InviteOptions): Promise<IInvite>;
+            /**
+             * Makes a request to create a permission overwrite for this channel.
+             */
+            createPermissionOverwrite(roleOrMember: IAuthenticatedUser | IRole | IGuildMember, allow?: IPermissions | number, deny?: IPermissions | number): Promise<IPermissionOverwrite>;
+            /**
+             * Makes a request to update this channel.
+             */
+            update(name?: string, topic?: string, bitrate?: number, userLimit?: number): Promise<IChannel>;
+            /**
+             * Makes a request to create a new channel with permission overwrites of this channel.
+             */
+            clone(name: string, type?: number, bitrate?: number, userLimit?: number);
+            /**
+             * Moves this channel to position and makes a batch channel update request.
+             */
+            setPosition(position: number): Promise<void>;
+            /**
+             * Makes a request to delete this channel.
+             */
             delete(): Promise<void>;
-            getInvites(): Promise<Object[]>;
+            /**
+             * Makes a request to get a list of invites for this channel.
+             */
+            getInvites(): Promise<IInvite[]>;
         }
 
         interface IUser {
@@ -1955,46 +2056,173 @@ declare module "discordie" {
             discriminator: String;
             avatar: String;
             bot: boolean;
+
+            /**
+             * Gets date and time the account was registered (created) at.
+             */
             registeredAt: Date;
-            avatarURL: String;
+            /**
+             * Gets current avatar URL.
+             */
+            avatarURL: String | null;
+            /**
+             * Current status of the user.
+             */
             status: String;
-            game: Object;
-            gameName: String;
+            /**
+             * Current game the user is playing.
+             */
+            game: Object | null;
+            /**
+             * Name of the current game the user is playing.
+             */
+            gameName: String | null;
+            /**
+             * Previous status of the user.
+             */
             previousStatus: String;
-            previousGame: Object;
-            previousGameName: String;
+            /**
+             * Previous game the user was playing.
+             */
+            previousGame: Object | null;
+            /**
+             * Name of the previous game the user was playing.
+             */
+            previousGameName: String | null;
+            /**
+             * Creates a mention from this user's id.
+             */
             mention: String;
+            /**
+             * Creates a nickname mention from this user's id.
+             */
             nickMention: String;
+            /**
+             * Returns true if this is a non-user bot object such as webhook-bot.
+             */
             isWebhook: boolean;
+            /**
+             * Gets date and time this object was created at.
+             */
             createdAt: Date;
-            isMentioned(message, ignoreImplicitMentions): boolean;
+
+            /**
+             * Checks whether the user is mentioned in a message.
+             */
+            isMentioned(message: IMessage, ignoreImplicitMentions: boolean): boolean;
+            /**
+             * Opens or gets existing Direct Message channel.
+             */
             openDM(): Promise<IDirectMessageChannel>;
-            memberOf(guild): IGuildMember;
-            permissionsFor(context): IPermissions;
-            can(permission, context): boolean;
-            getVoiceChannel(guild): IVoiceChannel;
+            /**
+             * Attempts to get a guild member interface, returns null if this user is not a member of the guild or guild is not in cache.
+             */
+            memberOf(guild: IGuild | string): IGuildMember | null;
+            /**
+             * Resolves permissions for user in context.
+             * Returns a helper object with getter boolean properties.
+             */
+            permissionsFor(context: IChannel | IGuild): IPermissions;
+            /**
+             * Resolves permissions for user in context and checks if user has permission.
+             * See IUser.permissionsFor method for list of throwable errors.
+             */
+            can(permission: number, context: IChannel | IGuild): boolean;
+            /**
+             * Gets the first voice channel that member of guild currently in.
+             */
+            getVoiceChannel(guild: IGuild | string | null): IVoiceChannel;
         }
 
         interface IUserCollection {
+            /**
+             * Number of elements in this collection.
+             */
             length: Number;
+            /**
+             * Number of elements in this collection. Alias for .length.
+             */
             size: Number;
-            fetchMembers(guilds?): Promise<void>;
-            getMember(guild, user): IGuildMember;
+
+            /**
+             * Request members and wait until cache populates for all guilds or an array of guilds. Request is made over gateway websocket.
+             * Will request members for all guilds if no arguments passed.
+             * By default Discord sends only online members if there are more than 250 (offline and online total) joined in a guild.
+             * Returned promise will resolve when all members have been fetched. Returned promise will reject if all or some members have not been received within 60 seconds or primary gateway websocket disconnected.
+             * If all members for chosen guilds are already in cache - returns a resolved promise.
+             * * Note: When guilds become unavailable or deleted (events GUILD_UNAVAILABLE and GUILD_DELETE) all members will also be deleted from cache.
+             */
+            fetchMembers(guilds?: IGuild | string | (IGuild|string)[]): Promise<void>;
+            /**
+             * Gets a IGuildMember for specified user of guild.
+             * Returns null if the user is not a member of the guild.
+             */
+            getMember(guild: IGuild | string, user: IUser | string): IGuildMember;
+            /**
+             * Creates an array of IGuildMember for guild.
+             */
             membersForGuild(guild): IGuildMember[];
+            /**
+             * Creates an array of IGuildMember that have permissions to read channel.
+             * * Note: This method computes permissions for all members and may be CPU intensive for large guilds.
+             */
             membersForChannel(channel): IGuildMember[];
+            /**
+             * Creates an array of IGuildMember containing active members in a voice channel.
+             */
             membersInVoiceChannel(channel): IGuildMember[];
+            /**
+             * Creates an array of IUser containing users in a private voice channel.
+             */
             usersInCall(channel): IUser[];
+            /**
+             * Creates an array of IGuildMember for guild that are currently online.
+             */
             onlineMembersForGuild(guild): IGuildMember[];
+            /**
+             * Creates an array of IGuildMember that have permissions to read channel and currently online.
+             * * Note: This method computes permissions for all members and may be CPU intensive for large guilds.
+             */
             onlineMembersForChannel(channel): IGuildMember[];
+            /**
+             * Creates an array of IGuildMember for guild that are currently offline.
+             * Does not guarantee every offline member unless IUserCollection.fetchMembers has been called for the guild.
+             */
             offlineMembersForGuild(guild): IGuildMember[];
+            /**
+             * Creates an array of IGuildMember that have permissions to read channel and currently offline.
+             * Does not guarantee every offline member unless IUserCollection.fetchMembers has been called for the guild the channel belongs to.
+             * * Note: This method computes permissions for all members and may be CPU intensive for large guilds.
+             */
             offlineMembersForChannel(channel): IGuildMember[];
+            /**
+             * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
+             */
             getBy(key, value): any;
+            /**
+             * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
+             */
             get(id): any;
+            /**
+             * Creates a new array with all elements that pass the test implemented by the provided function.
+             */
             filter(fn): any[];
+            /**
+             * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
+             */
             find(fn): Object;
+            /**
+             * Executes a provided function once per element.
+             */
             forEach(fn);
-            map(fn): any[];
-            toArray(): any[];
+            /**
+             * Creates a new array with the results of calling a provided function on every element in this collection.
+             */
+            map<T>(fn: (u: IUser) => T): T[];
+            /**
+             * Creates a new array with elements of this collection.
+             */
+            toArray(): IUser[];
         }
 
         interface IVoiceChannel {
@@ -2019,7 +2247,7 @@ declare module "discordie" {
             join(selfMute?, selfDeaf?): Promise<VoiceConnectionInfo>;
             leave();
             getVoiceConnectionInfo(): VoiceConnectionInfo;
-            createInvite(options): Promise<Object>;
+            createInvite(options): Promise<IInvite>;
             createPermissionOverwrite(roleOrMember, allow?, deny?): Promise<IPermissionOverwrite>;
             update(name?, topic?, bitrate?, userLimit?): Promise<IChannel>;
             clone(name, type?, bitrate?, userLimit?);
