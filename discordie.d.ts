@@ -54,7 +54,7 @@ declare module "discordie" {
         /**
          * Raw event data
          */
-        data: Object;
+        data: any;
     }
 
     interface VoiceConnectedEvent {
@@ -96,11 +96,11 @@ declare module "discordie" {
         /**
          * Old instance of internal User model (immutable)
          */
-        old: Object;
+        old: any;
         /**
          * New instance of internal User model (immutable)
          */
-        new: Object;
+        new: any;
     }
 
     interface VoiceChannelLeaveEvent {
@@ -203,7 +203,7 @@ declare module "discordie" {
         /**
          * Raw message object received from server
          */
-        data: Object;
+        data: any;
     }
 
     interface PresenceUpdateEvent {
@@ -234,7 +234,7 @@ declare module "discordie" {
         /**
          * Raw channel object received from server
          */
-        data: Object;
+        data: any;
     }
 
     interface ChannelUpdateEvent {
@@ -273,7 +273,7 @@ declare module "discordie" {
         /**
          * Raw guild object received from server
          */
-        data: Object;
+        data: any;
         /**
          * Function returning a raw guild object or null.
          */
@@ -302,7 +302,7 @@ declare module "discordie" {
         /**
          * Raw data received from server
          */
-        data: Object;
+        data: any;
         /**
          * Function returning a raw member object or null.
          */
@@ -381,7 +381,7 @@ declare module "discordie" {
         /**
          * Raw object received from server
          */
-        data: Object;
+        data: any;
     }
 
     interface CallUpdateEvent {
@@ -397,12 +397,13 @@ declare module "discordie" {
         /**
          * Raw object received from server
          */
-        data: Object;
+        data: any;
     }
 
     interface DiscordieDispatcher extends events.EventEmitter {
         /**
          * Emitted when login or gateway auth failed, or primary gateway socket disconnects, closing all open sockets.
+         * 
          * Not emitted if disconnected using client.disconnect().
          */
         on(event: "DISCONNECTED", cb: (e: DisconnectedEvent) => void);
@@ -770,7 +771,7 @@ declare module "discordie" {
             token: String;
             bot: boolean;
             mfa_enabled: boolean;
-            game: Object;
+            game: any;
             afk: boolean;
 
             /**
@@ -918,7 +919,7 @@ declare module "discordie" {
             /**
              * Makes a request to get a list of invites for this channel.
              */
-            getInvites(): Promise<Object[]>;
+            getInvites(): Promise<any[]>;
         }
 
         interface IChannelCollection {
@@ -958,7 +959,7 @@ declare module "discordie" {
             /**
              * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
              */
-            find(fn: (c: IChannel) => boolean): Object;
+            find(fn: (c: IChannel) => boolean): any;
             /**
              * Executes a provided function once per element.
              */
@@ -1207,7 +1208,7 @@ declare module "discordie" {
             icon: String;
             splash: String;
             features: Set<any>;
-            emojis: Object[];
+            emojis: any[];
             default_message_notifications: Number;
             afk_channel_id: String;
             afk_timeout: Number;
@@ -1329,11 +1330,11 @@ declare module "discordie" {
             /**
              * Makes a request to get a list of invites of this guild.
              */
-            getInvites(): Promise<Object[]>;
+            getInvites(): Promise<any[]>;
             /**
              * Makes a request to get a list of voice regions available for this guild.
              */
-            fetchRegions(): Promise<Object[]>;
+            fetchRegions(): Promise<any[]>;
             /**
              * Makes a request to transfer ownership of this guild to user.
              */
@@ -1352,24 +1353,24 @@ declare module "discordie" {
              * Only user and whitelisted bot accounts can use this endpoint.
              * Promise resolves with an array of Objects with following structure:
              */
-            fetchEmoji(): Promise<Object[]>;
+            fetchEmoji(): Promise<any[]>;
             /**
              * Makes a request to create an emoji.
              * Returned object does not contain user property.
              * Only user and whitelisted bot accounts can use this endpoint.
              */
-            uploadEmoji(image: Buffer | string, name: string): Promise<Object>;
+            uploadEmoji(image: Buffer | string, name: string): Promise<any>;
             /**
              * Makes a request to delete the specified emoji.
              * Only user and whitelisted bot accounts can use this endpoint.
              */
-            deleteEmoji(emoji: Object | string): Promise<Object>;
+            deleteEmoji(emoji: any | string): Promise<any>;
             /**
              * Makes a request to edit the specified emoji.
              * Returned object does not contain user property.
              * Only user and whitelisted bot accounts can use this endpoint.
              */
-            editEmoji(emoji: Object | string, options: { name: string; roles: string[]; }): Promise<Object>;
+            editEmoji(emoji: any | string, options: { name: string; roles: string[]; }): Promise<any>;
             /**
              * Creates a string URL of an emoji.
              */
@@ -1388,12 +1389,12 @@ declare module "discordie" {
             /**
              * Makes a request to create a guild.
              */
-            create(name: string, region: string, icon?: Buffer, roles?: (IRole | Object)[], channels?: (IChannel | Object)[],
+            create(name: string, region: string, icon?: Buffer, roles?: (IRole | any)[], channels?: (IChannel | any)[],
                 verificationLevel?: number, defaultMessageNotifications?: number): Promise<IGuild>;
             /**
              * Makes a request to get a default list of voice regions. Use IGuild.fetchRegions for getting guild-specific list.
              */
-            fetchRegions(): Promise<Object[]>;
+            fetchRegions(): Promise<any[]>;
             /**
              * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
              */
@@ -1445,7 +1446,7 @@ declare module "discordie" {
             /**
              * Current game the member is playing.
              */
-            game: Object;
+            game: any;
             /**
              * Name of the current game the member is playing.
              */
@@ -1457,7 +1458,7 @@ declare module "discordie" {
             /**
              * Previous game the member was playing.
              */
-            previousGame: Object;
+            previousGame: any;
             /**
              * Name of the previous game the member was playing.
              */
@@ -1594,20 +1595,20 @@ declare module "discordie" {
             /**
              * Makes a request to regenerate existing invite.
              */
-            regenerate(code: Object | string): Promise<Object>;
+            regenerate(code: any | string): Promise<any>;
             /**
              * Makes a request to revoke existing invite.
              */
-            revoke(code: Object | string): Promise<Object>;
+            revoke(code: any | string): Promise<any>;
             /**
              * Makes a request to resolve existing invite.
              */
-            resolve(code: Object | string): Promise<Object>;
+            resolve(code: any | string): Promise<any>;
             /**
              * * Deprecated: Only works with user accounts. Bot accounts can be invited by users with Manage Server permission using the https://discordapp.com/oauth2/authorize?client_id=%APP_ID%&scope=bot page. See official Discord API documentation for more info.
              * Makes a request to accept existing invite.
              */
-            accept(code: Object | string): Promise<Object>;
+            accept(code: any | string): Promise<any>;
         }
 
         interface IMessage {
@@ -1788,21 +1789,21 @@ declare module "discordie" {
              * Parameter channelId is ignored when messageId is an object or an instance of IMessage.
              * Returns a promise that resolves to a JSON object of the edited message.
              */
-            editMessage(content: string, messageId: IMessage | Object | string, channelId: string): Promise<Object>;
+            editMessage(content: string, messageId: IMessage | any | string, channelId: string): Promise<any>;
             /**
              * Makes a request to delete a message. Alternative method for deleting messages that are not in cache.
              * Parameter messageId can be an object with fields {channel_id, id}, where id is a String message id, channel_id is a String channel id.
              * Parameter channelId is ignored when messageId is an object or an instance of IMessage.
              */
-            deleteMessage(messageId: IMessage | Object | string, channelId: string): Promise<void>;
+            deleteMessage(messageId: IMessage | any | string, channelId: string): Promise<void>;
             /**
              * Makes a request to pin a message. Alternative method for pinning messages that are not in cache.
              */
-            pinMessage(messageId: IMessage | Object | string, channelId: string): Promise<void>;
+            pinMessage(messageId: IMessage | any | string, channelId: string): Promise<void>;
             /**
              * Makes a request to unpin a message. Alternative method for unpinning messages that are not in cache.
              */
-            unpinMessage(messageId: IMessage | Object | string, channelId: string): Promise<void>;
+            unpinMessage(messageId: IMessage | any | string, channelId: string): Promise<void>;
             /**
              * Makes a request to delete multiple messages.
              * If messages array contains instances of IMessage, parameter channel is not required as it will be determined from the first message instance. Also deleted messages will be omitted from the request.
@@ -2071,7 +2072,7 @@ declare module "discordie" {
             /**
              * Current game the user is playing.
              */
-            game: Object | null;
+            game: any | null;
             /**
              * Name of the current game the user is playing.
              */
@@ -2083,7 +2084,7 @@ declare module "discordie" {
             /**
              * Previous game the user was playing.
              */
-            previousGame: Object | null;
+            previousGame: any | null;
             /**
              * Name of the previous game the user was playing.
              */
@@ -2145,15 +2146,20 @@ declare module "discordie" {
 
             /**
              * Request members and wait until cache populates for all guilds or an array of guilds. Request is made over gateway websocket.
+             * 
              * Will request members for all guilds if no arguments passed.
+             * 
              * By default Discord sends only online members if there are more than 250 (offline and online total) joined in a guild.
+             * 
              * Returned promise will resolve when all members have been fetched. Returned promise will reject if all or some members have not been received within 60 seconds or primary gateway websocket disconnected.
+             * 
              * If all members for chosen guilds are already in cache - returns a resolved promise.
              * * Note: When guilds become unavailable or deleted (events GUILD_UNAVAILABLE and GUILD_DELETE) all members will also be deleted from cache.
              */
             fetchMembers(guilds?: IGuild | string | (IGuild|string)[]): Promise<void>;
             /**
              * Gets a IGuildMember for specified user of guild.
+             * 
              * Returns null if the user is not a member of the guild.
              */
             getMember(guild: IGuild | string, user: IUser | string): IGuildMember;
@@ -2185,11 +2191,13 @@ declare module "discordie" {
             onlineMembersForChannel(channel): IGuildMember[];
             /**
              * Creates an array of IGuildMember for guild that are currently offline.
+             * 
              * Does not guarantee every offline member unless IUserCollection.fetchMembers has been called for the guild.
              */
             offlineMembersForGuild(guild): IGuildMember[];
             /**
              * Creates an array of IGuildMember that have permissions to read channel and currently offline.
+             * 
              * Does not guarantee every offline member unless IUserCollection.fetchMembers has been called for the guild the channel belongs to.
              * * Note: This method computes permissions for all members and may be CPU intensive for large guilds.
              */
@@ -2209,7 +2217,7 @@ declare module "discordie" {
             /**
              * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
              */
-            find(fn): Object;
+            find(fn): any;
             /**
              * Executes a provided function once per element.
              */
@@ -2237,49 +2245,188 @@ declare module "discordie" {
             user_limit: Number;
             owner_id: String;
             icon: String;
+
+            /**
+             * Creates an array of members joined in this voice channels.
+             */
             members: IGuildMember[];
+            /**
+             * Checks whether current user is in this voice channel.
+             */
             joined: boolean;
-            is_private: boolean;
-            isPrivate: boolean;
-            guild: IGuild;
+            /**
+             * * Deprecated: Removed in API v6. Use isPrivate instead.
+             */
+            is_private: boolean | null;
+            /**
+             * Checks whether this channel is a direct message channel or a group.
+             */
+            isPrivate: boolean | null;
+            /**
+             * Gets guild of this channel.
+             */
+            guild: IGuild | null;
+            /**
+             * Gets date and time this object was created at.
+             */
             createdAt: Date;
-            join(selfMute?, selfDeaf?): Promise<VoiceConnectionInfo>;
+
+            /**
+             * Joins this voice channel. Creates a new voice connection if there are no active connections for this channels' guild.
+             * * Note: One account can be only in one channel per guild. Promise will resolve instantly and contain the same instance if connection to the server is already established.
+             */
+            join(selfMute?: boolean, selfDeaf?: boolean): Promise<VoiceConnectionInfo>;
+            /**
+             * Leaves this voice channel if joined.
+             */
             leave();
-            getVoiceConnectionInfo(): VoiceConnectionInfo;
-            createInvite(options): Promise<IInvite>;
-            createPermissionOverwrite(roleOrMember, allow?, deny?): Promise<IPermissionOverwrite>;
-            update(name?, topic?, bitrate?, userLimit?): Promise<IChannel>;
-            clone(name, type?, bitrate?, userLimit?);
-            setPosition(position): Promise<void>;
+            /**
+             * Retrieves VoiceConnectionInfo for this voice channel.
+             */
+            getVoiceConnectionInfo(): VoiceConnectionInfo | null;
+            /**
+             * Makes a request to create an invite for this channel.
+             */
+            createInvite(options: InviteOptions): Promise<IInvite>;
+            /**
+             * Makes a request to create a permission overwrite for this channel.
+             */
+            createPermissionOverwrite(roleOrMember: IAuthenticatedUser | IRole | IGuildMember, allow?: IPermissions | number, deny?: IPermissions | number): Promise<IPermissionOverwrite>;
+            /**
+             * Makes a request to update this channel.
+             */
+            update(name?: string, topic?: string, bitrate?: number, userLimit?: number): Promise<IChannel>;
+            /**
+             * Makes a request to create a new channel with permission overwrites of this channel.
+             */
+            clone(name: string, type?: number, bitrate?: number, userLimit?: number);
+            /**
+             * Moves this channel to position and makes a batch channel update request.
+             */
+            setPosition(position: number): Promise<void>;
+            /**
+             * Makes a request to delete this channel.
+             */
             delete(): Promise<void>;
-            getInvites(): Promise<Object[]>;
+            /**
+             * Makes a request to get a list of invites for this channel.
+             */
+            getInvites(): Promise<IInvite[]>;
         }
 
         interface IVoiceConnection {
+            /**
+             * Checks whether this voice connection is no longer valid.
+             */
             disposed: boolean;
+            /**
+             * Checks whether this voice connection is fully initialized.
+             */
             canStream: boolean;
-            channel: IChannel;
-            channelId: String;
-            guild: IGuild;
-            guildId: String;
-            ssrcToUser(ssrc): IUser;
-            ssrcToMember(ssrc): IGuildMember;
+            /**
+             * Gets channel of this voice connection.
+             * 
+             * Returns last channel it was connected to if voice connection has been disposed. Returns null if guild became unavailable or channel doesn't exist in cache.
+             */
+            channel: IChannel | null;
+            /**
+             * Gets channel id of this voice connection.
+             * 
+             * Returns last channel id it was connected to if voice connection has been disposed.
+             */
+            channelId: String | null;
+            /**
+             * Gets guild of this voice connection.
+             * 
+             * Returns null if this is a private call, or guild became unavailable or doesn't exist in cache.
+             */
+            guild: IGuild | null;
+            /**
+             * Gets guild id of this voice connection.
+             * 
+             * Returns null if this is a private call.
+             */
+            guildId: String | null;
+
+            /**
+             * Resolves a user object from source id assigned to this voice connection.
+             */
+            ssrcToUser(ssrc: number): IUser;
+            /**
+             * Resolves a member object from source id assigned to this voice connection.
+             */
+            ssrcToMember(ssrc: number): IGuildMember;
+            /**
+             * Initializes encoder and gets stream for this voice connection.
+             * 
+             * Calls without arguments return existing encoder without reinitialization.
+             * 
+             * See AudioEncoder.initialize() method for list of options.
+             */
             getEncoderStream(options?): AudioEncoderStream;
+            /**
+             * Creates an external encoder.
+             * 
+             * Accepts options object with type property (default {type: "ffmpeg"}). Each type supports additional options. See docs for returned classes for usage info.
+             */
             createExternalEncoder(options?): FFmpegEncoder | OggOpusPlayer | WebmOpusPlayer;
+            /**
+             * Initializes encoder instance for this voice connection.
+             * Calls without arguments return existing encoder without reinitialization.
+             * See AudioEncoder.initialize() method for list of options.
+             */
             getEncoder(options?): AudioEncoder;
+            /**
+             * Initializes decoder instance for this voice connection.
+             * Calls without arguments return existing decoder without reinitialization.
+             */
             getDecoder(options?): any;
+            /**
+             * Disconnects this voice connection.
+             */
             disconnect();
         }
 
         interface IWebhookManager {
-            fetchForGuild(guild): Promise<Object[]>;
-            fetchForChannel(channel): Promise<Object[]>;
-            create(channel, options): Promise<Object>;
-            fetch(webhook, token): Promise<Object>;
-            edit(webhook, token, options): Promise<Object>;
-            delete(webhook, token): Promise<void>;
-            execute(webhook, token, options, wait?): Promise<void>;
-            executeSlack(webhook, token, options, wait?): Promise<void>;
+            /**
+             * * Requires logging in with an API token.
+             * Makes a request to get webhook objects for the specified guild.
+             */
+            fetchForGuild(guild: IGuild | string): Promise<any[]>;
+            /**
+             * * Requires logging in with an API token.
+             * Makes a request to get webhook objects for the specified channel.
+             */
+            fetchForChannel(channel: IChannel): Promise<any[]>;
+            /**
+             * * Requires logging in with an API token.
+             * Makes a request to create a webhook for the channel.
+             * Promise resolves with a webhook any.
+             */
+            create(channel: IChannel, options: { name: string; avatar: Buffer | string | null; }): Promise<any>;
+            /**
+             * Makes a request to fetch a webhook any.
+             * Promise resolves with a webhook object (does not contain a user object if fetched with token param).
+             */
+            fetch(webhook: any | string, token: string): Promise<any>;
+            /**
+             * Makes a request to edit the specified webhook.
+             * Promise resolves with a webhook object (does not contain a user object if edited with token param).
+             */
+            edit(webhook: any | string, token: string, options: any): Promise<any>;
+            /**
+             * Makes a request to delete the specified webhook.
+             */
+            delete(webhook: any | string, token: string): Promise<void>;
+            /**
+             * Makes a request to execute the specified webhook.
+             * Note: Embeds in file uploads are not supported.
+             */
+            execute(webhook: any | string, token: string, options: any, wait?: boolean): Promise<void>;
+            /**
+             * Makes a request to execute the specified webhook with slack-compatible options.
+             */
+            executeSlack(webhook: any | string, token: string, options: any, wait?: boolean): Promise<void>;
         }
     }
 
