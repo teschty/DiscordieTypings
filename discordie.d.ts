@@ -65,7 +65,7 @@ declare module "discordie" {
     interface VoiceDisconnectedEvent {
         socket;
         voiceConnection: Discordie.IVoiceConnection;
-        error: Error;
+        error?: Error;
         /**
          * Indicating whether was caused by IVoiceChannel.leave() or Discordie.disconnect(), also true if channel/guild has been deleted
          */
@@ -106,17 +106,17 @@ declare module "discordie" {
     interface VoiceChannelLeaveEvent {
         socket;
         user: Discordie.IUser;
-        channel: Discordie.IChannel;
+        channel?: Discordie.IChannel;
         channelId: string;
         guildId: string;
         /**
          * Next channel id if user moved to another channel
          */
-        newChannelId: string;
+        newChannelId?: string;
         /**
          * Next guild id if user moved to another channel
          */
-        newGuildId: string;
+        newGuildId?: string;
     }
 
     interface VoiceChannelJoinEvent {
@@ -184,7 +184,7 @@ declare module "discordie" {
         socket;
         channelId: string;
         messageId: string;
-        message: Discordie.IMessage;
+        message?: Discordie.IMessage;
     }
 
     interface MessageDeleteBulkEvent {
@@ -199,11 +199,29 @@ declare module "discordie" {
 
     interface MessageUpdateEvent {
         socket;
-        message: Discordie.IMessage;
+        message?: Discordie.IMessage;
         /**
          * Raw message object received from server
          */
-        data: any;
+        data: {
+            type?: number;
+            tts?: number;
+            timestamp?: string;
+            edited_timestamp?: string;
+            id: string;
+            embeds: [{
+                url: string;
+                type: string;
+                thumbnail: {
+                    width: number;
+                    height: number;
+                    url: string;
+                    proxy_url: string;
+                }
+            }],
+            channel_id: string;
+            deleted: boolean;
+        }
     }
 
     interface PresenceUpdateEvent {
@@ -315,7 +333,7 @@ declare module "discordie" {
         member: Discordie.IGuildMember;
         rolesAdded: Discordie.IRole[];
         rolesRemoved: Discordie.IRole[];
-        previousNick: string;
+        previousNick?: string;
         /**
          * Function returning an object {before: ..., after: ...} containing two raw member objects.
          */
@@ -353,7 +371,7 @@ declare module "discordie" {
     interface GuildRoleDeleteEvent {
         socket;
         guild: Discordie.IGuild;
-        roleId: String;
+        roleId: string;
         /**
          * Function returning a raw role object or null.
          */
@@ -761,18 +779,18 @@ declare module "discordie" {
 
     namespace Discordie {
         interface IAuthenticatedUser {
-            id: String;
-            username: String;
-            discriminator: String;
-            email: String;
-            verified: boolean;
-            status: String;
-            avatar: String;
-            token: String;
-            bot: boolean;
-            mfa_enabled: boolean;
-            game: any;
-            afk: boolean;
+            id?: string;
+            username?: string;
+            discriminator?: string;
+            email?: string;
+            verified?: boolean;
+            status?: string;
+            avatar?: string;
+            token?: string;
+            bot?: boolean;
+            mfa_enabled?: boolean;
+            game?: any;
+            afk?: boolean;
 
             /**
              * Gets date and time the account was registered (created) at.
@@ -781,7 +799,7 @@ declare module "discordie" {
             /**
              * Gets current avatar URL.
              */
-            avatarURL: String;
+            avatarURL?: string;
             /**
              * Gets a value indicating whether the account is claimed.
              */
@@ -789,15 +807,15 @@ declare module "discordie" {
             /**
              * Name of the game current user is playing.
              */
-            gameName: String;
+            gameName?: string;
             /**
              * Creates a mention from this user's id.
              */
-            mention: String;
+            mention: string;
             /**
              * Creates a nickname mention from this user's id.
              */
-            nickMention: String;
+            nickMention: string;
             /**
              * Gets date and time this object was created at.
              */
@@ -805,10 +823,10 @@ declare module "discordie" {
         }
 
         interface ICall {
-            channel_id: String;
-            message_id: String;
-            region: String;
-            unavailable: boolean;
+            channel_id?: string;
+            message_id?: string;
+            region?: string;
+            unavailable?: boolean;
 
             /**
              * Gets date and time this call was created at.
@@ -818,7 +836,7 @@ declare module "discordie" {
              * Checks if the call is ringing for current user.
              */
             isRinging: boolean;
-            ringing: IUser[];
+            ringing?: IUser[];
         }
 
         interface InviteOptions {
@@ -862,31 +880,31 @@ declare module "discordie" {
         }
 
         interface IChannel {
-            id: String;
-            name: String;
-            topic: String;
-            position: Number;
-            type: Number;
-            guild_id: String;
-            recipients: Set<IUser>;
+            id?: string;
+            name?: string;
+            topic?: string;
+            position?: Number;
+            type?: Number;
+            guild_id?: string;
+            recipients?: Set<IUser>;
             permission_overwrites: IPermissionOverwrite[];
-            bitrate: Number;
-            user_limit: Number;
-            owner_id: String;
-            icon: String;
+            bitrate?: Number;
+            user_limit?: Number;
+            owner_id?: string;
+            icon?: string;
 
             /**
              * Removed in API v6. Use isPrivate instead.
              */
-            is_private: boolean;
+            is_private?: boolean;
             /**
              * Checks whether this channel is a direct message channel or a group.
              */
-            isPrivate: boolean;
+            isPrivate?: boolean;
             /**
              * Gets guild of this channel.
              */
-            guild: IGuild;
+            guild?: IGuild;
             /**
              * Gets date and time this object was created at.
              */
@@ -947,11 +965,11 @@ declare module "discordie" {
             /**
              * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
              */
-            getBy(key: string, value): IChannel;
+            getBy(key: string, value): IChannel | null;
             /**
              * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
              */
-            get(id: string): IChannel;
+            get(id: string): IChannel | null;
             /**
              * Creates a new array with all elements that pass the test implemented by the provided function.
              */
@@ -959,11 +977,11 @@ declare module "discordie" {
             /**
              * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
              */
-            find(fn: (c: IChannel) => boolean): any;
+            find(fn: (c: IChannel) => boolean): IChannel | null;
             /**
              * Executes a provided function once per element.
              */
-            forEach(fn: () => IChannel);
+            forEach(fn: (c: IChannel) => any);
             /**
              * Creates a new array with the results of calling a provided function on every element in this collection.
              */
@@ -987,41 +1005,41 @@ declare module "discordie" {
         }
 
         interface IDirectMessageChannel {
-            id: String;
-            name: String;
-            topic: String;
-            position: Number;
-            type: Number;
-            guild_id: String;
-            permission_overwrites: any[];
-            bitrate: Number;
-            user_limit: Number;
-            owner_id: String;
-            icon: String;
+            id?: string;
+            name: string;
+            topic?: string;
+            position?: Number;
+            type?: Number;
+            guild_id?: string;
+            permission_overwrites?: any[];
+            bitrate?: Number;
+            user_limit?: Number;
+            owner_id?: string;
+            icon?: string;
 
             /**
              * Deprecated: Removed in API v6. Use isPrivate instead.
              */
-            is_private: boolean;
+            is_private?: boolean;
             /**
              * Checks whether this channel is a direct message channel or a group.
              */
-            isPrivate: boolean;
+            isPrivate?: boolean;
             /**
              * Returns the owner of the private channel.
              * Returns null if the owner user is not in cache or there is no owner.
              */
-            owner: IAuthenticatedUser | IUser;
+            owner: IAuthenticatedUser | IUser | null;
             /**
              * Creates a string URL of image icon of this channel.
              */
-            iconURL: String;
+            iconURL: string | null;
             /**
              * Gets first recipient of this channel.
              * Returns null if this channel is invalid or has no recipients.
              * * Deprecated: Use recipients instead.
              */
-            recipient: IUser;
+            recipient: IUser | null;
             /**
              * Gets a value indicating whether all messages were loaded.
              */
@@ -1045,16 +1063,16 @@ declare module "discordie" {
              * Creates an array of users in the call.
              * Returns null if call does not exist in cache or has not started yet.
              */
-            usersInCall: IUser[];
+            usersInCall: IUser[] | null;
             /**
              * Gets call from cache.
              * Returns null if call does not exist in cache or has not started yet.
              */
-            call: ICall;
+            call: ICall | null;
             /**
              * Gets recipients of this channel.
              */
-            recipients: IUser[];
+            recipients: IUser[] | null;
             /**
              * Gets date and time this object was created at.
              */
@@ -1136,12 +1154,12 @@ declare module "discordie" {
             /**
              * Retrieves VoiceConnectionInfo for the call of this channel.
              */
-            getVoiceConnectionInfo(): VoiceConnectionInfo;
+            getVoiceConnectionInfo(): VoiceConnectionInfo | null;
             /**
              * Fetches call info through gateway socket.
              * Currently there are no ways to fetch call info for all channels at once.
              */
-            fetchCall(): Promise<ICall>;
+            fetchCall(): Promise<ICall | null>;
         }
 
         interface IDirectMessageChannelCollection {
@@ -1169,11 +1187,11 @@ declare module "discordie" {
             /**
              * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
              */
-            getBy(key, value): IDirectMessageChannel;
+            getBy(key, value): IDirectMessageChannel | null;
             /**
              * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
              */
-            get(id: string): IDirectMessageChannel;
+            get(id: string): IDirectMessageChannel | null;
             /**
              * Creates a new array with all elements that pass the test implemented by the provided function.
              */
@@ -1181,7 +1199,7 @@ declare module "discordie" {
             /**
              * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
              */
-            find(fn: (d: IDirectMessageChannel) => boolean): IDirectMessageChannel;
+            find(fn: (d: IDirectMessageChannel) => boolean): IDirectMessageChannel | null;
             /**
              * Executes a provided function once per element.
              */
@@ -1202,45 +1220,45 @@ declare module "discordie" {
         }
 
         interface IGuild {
-            id: String;
-            name: String;
-            owner_id: String;
-            icon: String;
-            splash: String;
-            features: Set<any>;
-            emojis: any[];
-            default_message_notifications: Number;
-            afk_channel_id: String;
-            afk_timeout: Number;
-            verification_level: Number;
-            region: String;
-            member_count: Number;
-            large: Boolean;
-            mfa_level: Number;
-            joined_at: String;
+            id?: string;
+            name?: string;
+            owner_id?: string;
+            icon?: string;
+            splash?: string;
+            features?: Set<any>;
+            emojis?: any[];
+            default_message_notifications?: Number;
+            afk_channel_id?: string;
+            afk_timeout?: Number;
+            verification_level?: Number;
+            region?: string;
+            member_count?: Number;
+            large?: Boolean;
+            mfa_level?: Number;
+            joined_at?: string;
 
             /**
              * Creates an acronym string for this guild. (Text that shows up as guild icon in the client if there is no image icon.)
              */
-            acronym: String;
+            acronym: string;
             /**
              * Creates a string URL of image icon of this guild.
              */
-            iconURL: String;
+            iconURL?: string;
             /**
              * Creates a string URL of invite splash image of this guild.
              */
-            splashURL: String;
+            splashURL?: string;
             /**
              * Returns afk channel of this guild.
              */
-            afk_channel: IChannel;
+            afk_channel?: IChannel;
             /**
              * Returns the owner of this guild.
              * Returns null if the owner user is not in cache.
              * See .isOwner(user) if you want to safely check if the user is owner.
              */
-            owner: IAuthenticatedUser | IUser;
+            owner?: IAuthenticatedUser | IUser;
             /**
              * Creates an array of text and voice channels of this guild.
              */
@@ -1278,7 +1296,7 @@ declare module "discordie" {
              * Makes a request to edit this guild, substituting undefined or null properties with current values.
              * Passing null in icon or afkChannelId will remove current icon/channel. Use undefined instead of null in this case.
              */
-            edit(name?: string, icon?: string | Buffer, region?: string, afkChannelId?: IChannel | string,
+            edit(name?: string, icon?: string | Buffer | null, region?: string, afkChannelId?: IChannel | string | null,
                 afkTimeout?: number, verificationLevel?: number, defaultMessageNotifications?: number): Promise<IGuild>;
             /**
              * Makes a request to create a channel in this guild.
@@ -1374,7 +1392,7 @@ declare module "discordie" {
             /**
              * Creates a string URL of an emoji.
              */
-            getEmojiURL(): String;
+            getEmojiURL(): string | null;
         }
 
         interface IGuildCollection {
@@ -1398,11 +1416,11 @@ declare module "discordie" {
             /**
              * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
              */
-            getBy(key, value): IGuild;
+            getBy(key, value): IGuild | null;
             /**
              * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
              */
-            get(id: string): IGuild;
+            get(id: string): IGuild | null;
             /**
              * Creates a new array with all elements that pass the test implemented by the provided function.
              */
@@ -1410,7 +1428,7 @@ declare module "discordie" {
             /**
              * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
              */
-            find(fn: (g: IGuild) => boolean): IGuild;
+            find(fn: (g: IGuild) => boolean): IGuild | null;
             /**
              * Executes a provided function once per element.
              */
@@ -1426,51 +1444,51 @@ declare module "discordie" {
         }
 
         interface IGuildMember {
-            id: String;
-            guild_id: String;
-            nick: String;
-            mute: boolean;
-            deaf: boolean;
-            self_mute: boolean;
-            self_deaf: boolean;
-            joined_at: String;
-            username: String;
-            discriminator: String;
-            avatar: String;
-            bot: boolean;
+            id?: string;
+            guild_id?: string;
+            nick?: string;
+            mute?: boolean;
+            deaf?: boolean;
+            self_mute?: boolean;
+            self_deaf?: boolean;
+            joined_at?: string;
+            username?: string;
+            discriminator?: string;
+            avatar?: string;
+            bot?: boolean;
 
             /**
              * Current status of the member.
              */
-            status: String;
+            status: string;
             /**
              * Current game the member is playing.
              */
-            game: any;
+            game?: any;
             /**
              * Name of the current game the member is playing.
              */
-            gameName: String;
+            gameName?: string;
             /**
              * Previous status of the member.
              */
-            previousStatus: String;
+            previousStatus: string;
             /**
              * Previous game the member was playing.
              */
-            previousGame: any;
+            previousGame?: any;
             /**
              * Name of the previous game the member was playing.
              */
-            previousGameName: String;
+            previousGameName?: string;
             /**
              * Gets guild of this member.
              */
-            guild: IGuild;
+            guild?: IGuild;
             /**
              * Gets nick of this member if set, otherwise returns username.
              */
-            name: String;
+            name?: string;
             /**
              * Creates an array of roles assigned to this member.
              */
@@ -1482,15 +1500,15 @@ declare module "discordie" {
             /**
              * Gets current avatar URL.
              */
-            avatarURL: String;
+            avatarURL?: string;
             /**
              * Creates a mention from this user's id.
              */
-            mention: String;
+            mention: string;
             /**
              * Creates a nickname mention from this user's id.
              */
-            nickMention: String;
+            nickMention: string;
             /**
              * Returns true if this is a non-user bot object such as webhook-bot.
              */
@@ -1503,7 +1521,7 @@ declare module "discordie" {
             /**
              * Gets the first voice channel that this member is currently in.
              */
-            getVoiceChannel(): IVoiceChannel;
+            getVoiceChannel(): IVoiceChannel | null;
             /**
              * Makes a request to kick this member (from the guild they belong to).
              */
@@ -1573,7 +1591,7 @@ declare module "discordie" {
             /**
              * Attempts to get a guild member interface, returns null if this user is not a member of the guild or guild is not in cache.
              */
-            memberOf(guild: IGuild): IGuildMember;
+            memberOf(guild: IGuild): IGuildMember | null;
             /**
              * Resolves permissions for user in context.
              * Returns a helper object with getter boolean properties.
@@ -1612,23 +1630,23 @@ declare module "discordie" {
         }
 
         interface IMessage {
-            id: String;
-            type: Number;
-            channel_id: String;
+            id?: string;
+            type?: Number;
+            channel_id?: string;
             author: IUser;
-            content: String;
-            attachments: any[];
-            embeds: any[];
+            content?: string;
+            attachments?: any[];
+            embeds?: any[];
             mentions: IUser[];
             mention_roles: IRole[];
-            mention_everyone: boolean;
-            tts: boolean;
-            timestamp: String;
-            edited_timestamp: String;
-            nonce: String;
-            webhook_id: String;
-            pinned: boolean;
-            deleted: boolean;
+            mention_everyone?: boolean;
+            tts?: boolean;
+            timestamp?: string;
+            edited_timestamp?: string;
+            nonce?: string;
+            webhook_id?: string;
+            pinned?: boolean;
+            deleted?: boolean;
 
             /**
              * Checks whether this message is cached.
@@ -1638,24 +1656,24 @@ declare module "discordie" {
              * Checks whether this message was edited by the author.
              * Returns null if message does not exist in cache.
              */
-            isEdited: boolean;
+            isEdited?: boolean;
             /**
              * Checks whether this message is from a private channel (direct message).
              * Returns null if message/channel does not exist in cache.
              */
-            isPrivate: boolean;
+            isPrivate?: boolean;
             /**
              * Checks whether the message is a system message.
              */
-            isSystem: boolean;
+            isSystem?: boolean;
             /**
              * Generates a system message string depending on message type.
              */
-            systemMessage: String;
+            systemMessage?: string;
             /**
              * Resolves username that should be displayed with this message.
              */
-            displayUsername: String;
+            displayUsername?: string;
             /**
              * Gets channel of this message.
              * Returns null if message does not exist in cache.
@@ -1665,12 +1683,12 @@ declare module "discordie" {
              * Gets guild of this message.
              * Returns null if message does not exist in cache or from a private channel (direct message).
              */
-            guild: IGuild;
+            guild?: IGuild;
             /**
              * Gets member instance of author.
              * Returns null for private channels, if message does not exist in cache, the author is no longer a member of the guild, or it is a webhook message.
              */
-            member: IGuildMember;
+            member?: IGuildMember;
             /**
              * Creates an array of all known (cached) versions of this message (including the latest). Sorted from latest (first) to oldest (last). Does not include embeds.
              */
@@ -1682,13 +1700,13 @@ declare module "discordie" {
             /**
              * Raw MessageCall object:
              */
-            call: { participants: string[]; ended_timestamp: string };
+            call?: { participants: string[]; ended_timestamp?: string };
 
             /**
              * Resolves user and channel references in content property to proper names. References that are not found in cache will be left as is and not resolved.
              * * Returns null if this message is not cached.
              */
-            resolveContent(): string;
+            resolveContent(): string | null;
             /**
              * Makes a request to edit this message.
              * Editing of other users' messages is not allowed, server will send an Error Forbidden and returned promise will be rejected if you attempt to do so.
@@ -1785,14 +1803,14 @@ declare module "discordie" {
             /**
              * Makes a request to edit a message. Alternative method for editing messages that are not in cache.
              * Editing of other users' messages is not allowed, server will send an Error Forbidden and returned promise will be rejected if you attempt to do so.
-             * Parameter messageId can be an object with fields {channel_id, id}, where id is a String message id, channel_id is a String channel id.
+             * Parameter messageId can be an object with fields {channel_id, id}, where id is a string message id, channel_id is a string channel id.
              * Parameter channelId is ignored when messageId is an object or an instance of IMessage.
              * Returns a promise that resolves to a JSON object of the edited message.
              */
             editMessage(content: string, messageId: IMessage | any | string, channelId: string): Promise<any>;
             /**
              * Makes a request to delete a message. Alternative method for deleting messages that are not in cache.
-             * Parameter messageId can be an object with fields {channel_id, id}, where id is a String message id, channel_id is a String channel id.
+             * Parameter messageId can be an object with fields {channel_id, id}, where id is a string message id, channel_id is a string channel id.
              * Parameter channelId is ignored when messageId is an object or an instance of IMessage.
              */
             deleteMessage(messageId: IMessage | any | string, channelId: string): Promise<void>;
@@ -1813,15 +1831,15 @@ declare module "discordie" {
             /**
              * Resolves user and channel references to proper names. References that are not found in cache will be left as is and not resolved.
              */
-            resolveContent(content: string, guild?: IGuild | string): String;
+            resolveContent(content: string, guild?: IGuild | string): string;
             /**
              * Returns an an element, if key of an element in the collection with exact value can be found. Otherwise null is returned.
              */
-            getBy(key, value): any;
+            getBy(key, value): IMessage | null;
             /**
              * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
              */
-            get(id: string): IMessage;
+            get(id: string): IMessage | null;
             /**
              * Creates a new array with all elements that pass the test implemented by the provided function.
              */
@@ -1829,7 +1847,7 @@ declare module "discordie" {
             /**
              * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
              */
-            find(fn: (m: IMessage) => boolean): IMessage;
+            find(fn: (m: IMessage) => boolean): IMessage | null;
             /**
              * Executes a provided function once per element.
              */
@@ -1845,8 +1863,8 @@ declare module "discordie" {
         }
 
         interface IPermissionOverwrite {
-            id: String;
-            type: String;
+            id?: string;
+            type?: string;
             allow: IPermissions;
             deny: IPermissions;
 
@@ -1902,19 +1920,19 @@ declare module "discordie" {
         }
 
         interface IRole {
-            id: String;
-            name: String;
+            id?: string;
+            name?: string;
             permissions: IPermissions;
-            mentionable: boolean;
-            position: Number;
-            hoist: boolean;
-            color: Number;
-            managed: boolean;
+            mentionable?: boolean;
+            position?: Number;
+            hoist?: boolean;
+            color?: Number;
+            managed?: boolean;
 
             /**
              * Creates a mention from this role's id.
              */
-            mention: String;
+            mention: string;
             /**
              * Gets date and time this object was created at.
              */
@@ -1939,23 +1957,23 @@ declare module "discordie" {
         }
 
         interface ITextChannel {
-            id: String;
-            name: String;
-            topic: String;
+            id: string;
+            name: string;
+            topic: string;
             position: Number;
             type: Number;
-            guild_id: String;
+            guild_id: string;
             recipients: Set<IUser>;
             permission_overwrites: IPermissionOverwrite[];
             bitrate: Number;
             user_limit: Number;
-            owner_id: String;
-            icon: String;
+            owner_id: string;
+            icon: string;
 
             /**
              * Creates a mention from this channel's id.
              */
-            mention: String;
+            mention: string;
             /**
              * Creates an array of IGuildMember that have permissions to read this channel.
              */
@@ -2051,10 +2069,10 @@ declare module "discordie" {
         }
 
         interface IUser {
-            id: String;
-            username: String;
-            discriminator: String;
-            avatar: String;
+            id: string;
+            username: string;
+            discriminator: string;
+            avatar?: string;
             bot: boolean;
 
             /**
@@ -2064,11 +2082,11 @@ declare module "discordie" {
             /**
              * Gets current avatar URL.
              */
-            avatarURL: String | null;
+            avatarURL?: string | null;
             /**
              * Current status of the user.
              */
-            status: String;
+            status: string;
             /**
              * Current game the user is playing.
              */
@@ -2076,11 +2094,11 @@ declare module "discordie" {
             /**
              * Name of the current game the user is playing.
              */
-            gameName: String | null;
+            gameName: string | null;
             /**
              * Previous status of the user.
              */
-            previousStatus: String;
+            previousStatus: string;
             /**
              * Previous game the user was playing.
              */
@@ -2088,15 +2106,15 @@ declare module "discordie" {
             /**
              * Name of the previous game the user was playing.
              */
-            previousGameName: String | null;
+            previousGameName: string | null;
             /**
              * Creates a mention from this user's id.
              */
-            mention: String;
+            mention: string;
             /**
              * Creates a nickname mention from this user's id.
              */
-            nickMention: String;
+            nickMention: string;
             /**
              * Returns true if this is a non-user bot object such as webhook-bot.
              */
@@ -2131,7 +2149,7 @@ declare module "discordie" {
             /**
              * Gets the first voice channel that member of guild currently in.
              */
-            getVoiceChannel(guild: IGuild | string | null): IVoiceChannel;
+            getVoiceChannel(guild: IGuild | string | null): IVoiceChannel | null;
         }
 
         interface IUserCollection {
@@ -2209,19 +2227,19 @@ declare module "discordie" {
             /**
              * Returns an element with requested id, if exists in the collection. Otherwise null is returned.
              */
-            get(id): any;
+            get(id: string): IUser | null;
             /**
              * Creates a new array with all elements that pass the test implemented by the provided function.
              */
-            filter(fn): any[];
+            filter(fn: (u: IUser) => boolean): IUser[];
             /**
              * Returns a value in the collection, if an element in the collection satisfies the provided testing function. Otherwise null is returned.
              */
-            find(fn): any;
+            find(fn: (u: IUser) => boolean): IUser | null;
             /**
              * Executes a provided function once per element.
              */
-            forEach(fn);
+            forEach(fn: (u: IUser) => void);
             /**
              * Creates a new array with the results of calling a provided function on every element in this collection.
              */
@@ -2233,18 +2251,18 @@ declare module "discordie" {
         }
 
         interface IVoiceChannel {
-            id: String;
-            name: String;
-            topic: String;
+            id: string;
+            name: string;
+            topic: string;
             position: Number;
             type: Number;
-            guild_id: String;
+            guild_id: string;
             recipients: Set<IUser>;
             permission_overwrites: IPermissionOverwrite[];
             bitrate: Number;
             user_limit: Number;
-            owner_id: String;
-            icon: String;
+            owner_id: string;
+            icon: string;
 
             /**
              * Creates an array of members joined in this voice channels.
@@ -2334,7 +2352,7 @@ declare module "discordie" {
              * 
              * Returns last channel id it was connected to if voice connection has been disposed.
              */
-            channelId: String | null;
+            channelId: string | null;
             /**
              * Gets guild of this voice connection.
              * 
@@ -2346,7 +2364,7 @@ declare module "discordie" {
              * 
              * Returns null if this is a private call.
              */
-            guildId: String | null;
+            guildId: string | null;
 
             /**
              * Resolves a user object from source id assigned to this voice connection.
