@@ -3,8 +3,8 @@ declare module "discordie" {
     import * as stream from "stream";
 
     class VoiceConnectionInfo {
-        gatewaySocket;
-        voiceSocket;
+        gatewayblopet;
+        voiceblopet;
         public voiceConnection: Discordie.IVoiceConnection;
     }
 
@@ -48,9 +48,9 @@ declare module "discordie" {
 
     interface GatewayReadyResumedEvent {
         /**
-         * GatewaySocket
+         * Gatewayblopet
          */
-        socket;
+        blopet;
         /**
          * Raw event data
          */
@@ -58,12 +58,12 @@ declare module "discordie" {
     }
 
     interface VoiceConnectedEvent {
-        socket;
+        blopet;
         voiceConnection: Discordie.IVoiceConnection;
     }
 
     interface VoiceDisconnectedEvent {
-        socket;
+        blopet;
         voiceConnection: Discordie.IVoiceConnection;
         error?: Error;
         /**
@@ -77,22 +77,22 @@ declare module "discordie" {
     }
 
     interface GuildUnavailableEvent {
-        socket;
+        blopet;
         guildId: string;
     }
 
     interface CallUnavailableEvent {
-        socket;
+        blopet;
         channelId: string;
     }
 
     interface CallRingEvent {
-        socket;
+        blopet;
         channel: Discordie.IDirectMessageChannel;
     }
 
     interface PresenceMemberInfoUpdateEvent {
-        socket;
+        blopet;
         /**
          * Old instance of internal User model (immutable)
          */
@@ -104,7 +104,7 @@ declare module "discordie" {
     }
 
     interface VoiceChannelLeaveEvent {
-        socket;
+        blopet;
         user: Discordie.IUser;
         channel?: Discordie.IChannel;
         channelId: string;
@@ -120,7 +120,7 @@ declare module "discordie" {
     }
 
     interface VoiceChannelJoinEvent {
-        socket;
+        blopet;
         user: Discordie.IUser;
         channel: Discordie.IChannel;
         channelId: string;
@@ -128,7 +128,7 @@ declare module "discordie" {
     }
 
     interface VoiceUserSelfMuteEvent {
-        socket;
+        blopet;
         user: Discordie.IUser;
         channel: Discordie.IChannel;
         channelId: string;
@@ -140,7 +140,7 @@ declare module "discordie" {
     }
 
     interface VoiceUserSelfDeafEvent {
-        socket;
+        blopet;
         user: Discordie.IUser;
         channel: Discordie.IChannel;
         channelId: string;
@@ -152,7 +152,7 @@ declare module "discordie" {
     }
 
     interface VoiceUserMuteEvent {
-        socket;
+        blopet;
         user: Discordie.IUser;
         channel: Discordie.IChannel;
         channelId: string;
@@ -164,7 +164,7 @@ declare module "discordie" {
     }
 
     interface VoiceUserDeafEvent {
-        socket;
+        blopet;
         user: Discordie.IUser;
         channel: Discordie.IChannel;
         channelId: string;
@@ -176,19 +176,19 @@ declare module "discordie" {
     }
 
     interface MessageCreateEvent {
-        socket;
+        blopet;
         message: Discordie.IMessage;
     }
 
     interface MessageDeleteEvent {
-        socket;
+        blopet;
         channelId: string;
         messageId: string;
         message?: Discordie.IMessage;
     }
 
     interface MessageDeleteBulkEvent {
-        socket;
+        blopet;
         channelId: string;
         messageIds: string[];
         /**
@@ -198,7 +198,7 @@ declare module "discordie" {
     }
 
     interface MessageUpdateEvent {
-        socket;
+        blopet;
         message?: Discordie.IMessage;
         /**
          * Raw message object received from server
@@ -225,14 +225,14 @@ declare module "discordie" {
     }
 
     interface PresenceUpdateEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         user: Discordie.IUser;
         member: Discordie.IGuildMember | Discordie.IUser;
     }
 
     interface TypingStartEvent {
-        socket;
+        blopet;
         user: Discordie.IUser;
         /**
          * Unix timestamp
@@ -242,12 +242,12 @@ declare module "discordie" {
     }
 
     interface ChannelCreateEvent {
-        socket;
+        blopet;
         channel: Discordie.IChannel;
     }
 
     interface ChannelDeleteEvent {
-        socket;
+        blopet;
         channelId: string;
         /**
          * Raw channel object received from server
@@ -256,7 +256,7 @@ declare module "discordie" {
     }
 
     interface ChannelUpdateEvent {
-        socket;
+        blopet;
         channel: Discordie.IChannel;
         /**
          * Function returning an object {before: ..., after: ...} containing two raw channel objects.
@@ -265,19 +265,19 @@ declare module "discordie" {
     }
 
     interface ChannelRecipientAddEvent {
-        socket;
+        blopet;
         channel: Discordie.IDirectMessageChannel;
         user: Discordie.IUser;
     }
 
     interface ChannelRecipientRemoveEvent {
-        socket;
+        blopet;
         channel: Discordie.IDirectMessageChannel;
         user: Discordie.IUser;
     }
 
     interface GuildCreateEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         /**
          * Indicates whether the guild has recovered from unavailable state
@@ -286,7 +286,7 @@ declare module "discordie" {
     }
 
     interface GuildDeleteEvent {
-        socket;
+        blopet;
         guildId: string;
         /**
          * Raw guild object received from server
@@ -299,7 +299,7 @@ declare module "discordie" {
     }
 
     interface GuildUpdateEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         /**
          * Function returning an object {before: ..., after: ...} containing two raw guild objects.
@@ -308,13 +308,13 @@ declare module "discordie" {
     }
 
     interface GuildMemberAddEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         member: Discordie.IGuildMember;
     }
 
     interface GuildMemberRemoveEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         user: Discordie.IUser;
         /**
@@ -328,7 +328,7 @@ declare module "discordie" {
     }
 
     interface GuildMemberUpdateEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         member: Discordie.IGuildMember;
         rolesAdded: Discordie.IRole[];
@@ -341,25 +341,25 @@ declare module "discordie" {
     }
 
     interface GuildBanAddEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         user: Discordie.IUser;
     }
 
     interface GuildBanRemoveEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         user: Discordie.IUser;
     }
 
     interface GuildRoleCreateEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         role: Discordie.IRole;
     }
 
     interface GuildRoleUpdateEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         role: Discordie.IRole;
         /**
@@ -369,7 +369,7 @@ declare module "discordie" {
     }
 
     interface GuildRoleDeleteEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         roleId: string;
         /**
@@ -379,7 +379,7 @@ declare module "discordie" {
     }
 
     interface GuildEmojisUpdateEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         /**
          * Function returning an object {before: ..., after: ...} containing two full emoji arrays in format provided by Discord.
@@ -388,13 +388,13 @@ declare module "discordie" {
     }
 
     interface CallCreateEvent {
-        socket;
+        blopet;
         channel: Discordie.IDirectMessageChannel;
         call: Discordie.ICall;
     }
 
     interface CallDeleteEvent {
-        socket;
+        blopet;
         channelId: string;
         /**
          * Raw object received from server
@@ -403,13 +403,13 @@ declare module "discordie" {
     }
 
     interface CallUpdateEvent {
-        socket;
+        blopet;
         channel: Discordie.IDirectMessageChannel;
         call: Discordie.ICall;
     }
 
     interface WebhooksUpdateEvent {
-        socket;
+        blopet;
         guild: Discordie.IGuild;
         channel: Discordie.IChannel;
         /**
@@ -420,7 +420,7 @@ declare module "discordie" {
 
     interface DiscordieDispatcher extends events.EventEmitter {
         /**
-         * Emitted when login or gateway auth failed, or primary gateway socket disconnects, closing all open sockets.
+         * Emitted when login or gateway auth failed, or primary gateway blopet disconnects, closing all open blopets.
          * 
          * Not emitted if disconnected using client.disconnect().
          */
@@ -442,7 +442,7 @@ declare module "discordie" {
          */
         on(event: "VOICE_CONNECTED", cb: (e: VoiceConnectedEvent) => void);
         /**
-         * Emitted when a voice socket disconnects.
+         * Emitted when a voice blopet disconnects.
          */
         on(event: "VOICE_DISCONNECTED", cb: (e: VoiceDisconnectedEvent) => void);
         /**
@@ -597,13 +597,13 @@ declare module "discordie" {
          */
         public state: string;
         /**
-         * Gets a value indicating whether the gateway websocket connection is established.
+         * Gets a value indicating whether the gateway webblopet connection is established.
          */
         public connected: boolean;
 
         connect(credentials: { email?: string; password?: string; token?: string });
         /**
-         * Disconnects primary gateway websocket.
+         * Disconnects primary gateway webblopet.
          */
         disconnect();
     }
@@ -1156,7 +1156,7 @@ declare module "discordie" {
              */
             getVoiceConnectionInfo(): VoiceConnectionInfo | null;
             /**
-             * Fetches call info through gateway socket.
+             * Fetches call info through gateway blopet.
              * Currently there are no ways to fetch call info for all channels at once.
              */
             fetchCall(): Promise<ICall | null>;
@@ -2163,13 +2163,13 @@ declare module "discordie" {
             size: Number;
 
             /**
-             * Request members and wait until cache populates for all guilds or an array of guilds. Request is made over gateway websocket.
+             * Request members and wait until cache populates for all guilds or an array of guilds. Request is made over gateway webblopet.
              * 
              * Will request members for all guilds if no arguments passed.
              * 
              * By default Discord sends only online members if there are more than 250 (offline and online total) joined in a guild.
              * 
-             * Returned promise will resolve when all members have been fetched. Returned promise will reject if all or some members have not been received within 60 seconds or primary gateway websocket disconnected.
+             * Returned promise will resolve when all members have been fetched. Returned promise will reject if all or some members have not been received within 60 seconds or primary gateway webblopet disconnected.
              * 
              * If all members for chosen guilds are already in cache - returns a resolved promise.
              * * Note: When guilds become unavailable or deleted (events GUILD_UNAVAILABLE and GUILD_DELETE) all members will also be deleted from cache.
