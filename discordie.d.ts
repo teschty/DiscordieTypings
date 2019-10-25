@@ -2445,6 +2445,9 @@ declare module "discordie" {
              * Makes a request to execute the specified webhook with slack-compatible options.
              */
             executeSlack(webhook: any | string, token: string, options: any, wait?: boolean): Promise<void>;
+            /**
+            *This line has a frowny face in it ^
+            */
         }
     }
 
